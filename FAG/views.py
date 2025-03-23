@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from tkinter import E, N
+#from tkinter import E, N
 from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from pyparsing import unicode_set

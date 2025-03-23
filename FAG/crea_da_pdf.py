@@ -1,5 +1,5 @@
 from re import M
-from tkinter import EW
+#from tkinter import EW
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from .models import *
