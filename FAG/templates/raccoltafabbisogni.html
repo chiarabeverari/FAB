@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+    <h1> Raccolta Fabbisogni </h1>
+    <a class="btn btn-primary" href="{% url 'seleziona_tipo' %}"> Aggiungi Fabbisogno </a> 
+    <br>
+    <br>
+{% if request.user.Gruppo.ExSi %}
+<div>
+    <a class="btn btn-primary" href="{% url 'export-csvfabbisogni' %}?{{request.GET.urlencode}}">Export CSV</a>
+    <a class="btn btn-primary" href="{% url 'export-excelfabbisogni' %}?{{request.GET.urlencode}}">Export EXCEL</a>
+</div>
+{% endif %}
+<br>
+</p>
+<strong>Elenco Richieste Programmate:</strong>
+<br>
+<div style="max-height: 700px; overflow-y: auto;">
+     <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>Progr. <br> {{tabFilter.form.Progressivo}}</th>
+                    <th>Sede - Reparto - SubReparto <br> {{tabFilter.form.Sede}}</th>
+                    <th>Apparecchiatura<br> {{tabFilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà<br> {{tabFilter.form.Qta}}</th>
+                    <th>Priorità <br> {{tabFilter.form.Priorita}}</th>
+                    <th>Costo Presunto (IVA escl.)<br> {{tabFilter.form.Costo_Presunto_IVA}} </th>
+                    <th>Costo Presunto (IVA incl.)<br> {{tabFilter.form.Costo_Presunto_NOIVA}} </th>
+                    <th>Compilatore<br> {{tabFilter.form.Compilatore}}</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+                </tr>
+                
+            </thead>
+            <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att,avv in insieme %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td style="font-weight: bold;">{{att.Progressivo}}</td>
+                        <td>{{att.Sede_Reparto}}</td>
+                        <td>{{att.Apparecchiatura}}</td>
+                        <td>{{att.Qta}}</td>
+                        <td>{{att.Priorita}}</td>
+                        <td>{{att.Costo_Presunto_NOIVA}}</td>
+                        <td>{{att.Costo_Presunto_IVA}}</td>
+                        <td>{{att.Compilatore}}</td>
+                        <td style="font-weight:bold;">{% if att.ID_PianoInvestimenti is not None %} {{att.ID_PianoInvestimenti}} {% endif %}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2%}">Visualizza</a>  {% if avv %}{% else %} <br> <br> <a class="btn btn-sm btn-info" href="{% url 'aggiorna' att.id opt%}">Modifica Richiesta</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuovi' att.id %}">Rimuovi</a>{% endif %}</td>
+                    </tr>
+                    {% else %}
+                    
+                        <td style="font-weight: bold;"><del>{{att.Progressivo}}</del></td>
+                        <td><del>{{att.Sede_Reparto}}</del></td>
+                        <td><del>{{att.Apparecchiatura}}</del></td>
+                        <td><del>{{att.Qta}}</del></td>
+                        <td><del>{{att.Priorita}}</del></td>
+                        <td><del>{{att.Costo_Presunto_NOIVA}}</del></td>
+                        <td><del>{{att.Costo_Presunto_IVA}}</del></td>
+                        <td><del>{{att.Compilatore}}</del></td>
+                        <td style="font-weight:bold;">Eliminato</td>
+                        <td>{% if not att.Eliminato %}<a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2 %}">Visualizza</a>  {% if avv %}{% else %} <br> <br> <a class="btn btn-sm btn-info" href="{% url 'aggiorna' att.id opt%}">Modifica Richiesta</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuovi' att.id %}">Rimuovi</a>{% endif %}{% endif %}</td>
+                    
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type=submit></td></tr>
+                </form>
+            </tbody>
+        </table>
+            </div>
+</p> 
+
+<strong>Elenco Richieste Urgenti:</strong>
+<br>
+<div style="max-height: 700px; overflow-y: auto;">
+     <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>Progr. <br> {{urgFilter.form.Progressivo}}</th>
+                    <th>Sede - Reparto - SubReparto <br> {{urgFilter.form.Sede}}</th>
+                    <th>Apparecchiatura<br> {{urgFilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà<br> {{urgFilter.form.Qta}}</th>
+                    <th>Costo Presunto (IVA escl.)<br> {{urgFilter.form.Costo_Presunto_IVA}} </th>
+                    <th>Costo Presunto (IVA incl.)<br> {{urgFilter.form.Costo_Presunto_NOIVA}} </th>
+                    <th>Compilatore<br> {{urgFilter.form.Compilatore}}</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+                </tr>
+                
+            </thead>
+            <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att in urgenti %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td style="font-weight: bold;">{{att.Progressivo}}</td>
+                        <td>{{att.Sede_Reparto}}</td>
+                        <td>{{att.Apparecchiatura}}</td>
+                        <td>{{att.Qta}}</td>
+                        <td>{{att.Costo_Presunto_NOIVA}}</td>
+                        <td>{{att.Costo_Presunto_IVA}}</td>
+                        <td>{{att.Compilatore}}</td>
+                        <td style="font-weight:bold;">{% if att.ID_PianoInvestimenti is not None %} {{att.ID_PianoInvestimenti}} {% endif %}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'visualizzaurg' att.id %}">Visualizza</a>  {% if avv %}{% else %} <br> <br> <a class="btn btn-sm btn-info" href="{% url 'aggiornaurg' att.id %}">Modifica Richiesta</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuoviurg' att.id %}">Rimuovi</a>{% endif %}</td>
+                    </tr>
+                    {% else %}
+                    
+                        <td style="font-weight: bold;"><del>{{att.Progressivo}}</del></td>
+                        <td><del>{{att.Sede_Reparto}}</del></td>
+                        <td><del>{{att.Apparecchiatura}}</del></td>
+                        <td><del>{{att.Qta}}</del></td>
+                        <td><del>{{att.Costo_Presunto_NOIVA}}</del></td>
+                        <td><del>{{att.Costo_Presunto_IVA}}</del></td>
+                        <td><del>{{att.Compilatore}}</del></td>
+                        <td style="font-weight:bold;">Eliminato</td>
+                        <td>{% if not att.Eliminato %}<a class="btn btn-sm btn-info" href="{% url 'visualizzaurg' att.id %}">Visualizza</a>  {% if avv %}{% else %} <br> <br> <a class="btn btn-sm btn-info" href="{% url 'aggiornaurg' att.id %}">Modifica Richiesta</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuoviurg' att.id %}">Rimuovi</a>{% endif %}{% endif %}</td>
+                    
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type=submit></td></tr>
+                </form>
+            </tbody>
+        </table>
+            </div>
+</p> 
+
+    
+{% endif %}
+{% endblock %}

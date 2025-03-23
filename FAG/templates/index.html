@@ -1,0 +1,721 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+{% if user.is_authenticated %}
+<h3>Benvenuto/a <b><i>{{ user.Nome }} {{user.Cognome}}</i></b></h3>
+        <p>Hai <a href="{% url 'useraccount' %}">{{counter}}</a> notifiche non lette</p>
+        <br>
+{% if var == '1' %} <!--MEDICO-->
+    <div class="row d-flex align-items-stretch">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i tuoi fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align: center;"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-sm-4"></div>
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-sm-4"></div>
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">NOTIFICHE FAB</h5>
+            <p class="card-text">Visualizza le proprie notifiche FAB</p>
+            <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div> <!--fine prima riga-->
+    </div>
+
+        <br>
+
+    <div class="row d-flex align-items-stretch">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti</p>
+            <p style="text-align: center;"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div> 
+
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+                <h5 class="card-title"> INSERISCI LE SPECIFICHE</h5>
+                <p class="card-text">Inserisci le specifiche dei fabbisogni di investimenti avviati oppure crea un nuovo fabbisogno da associare ad una voce sacco del P.I.</p>
+                <p style="text-align: center;"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align:center"><a href="{% url 'home' Gare %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+        <br>
+
+    <div class="row d-flex align-items-stretch">
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza le priorità</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+{% elif var == '5' %} <!--ADMIN-->
+    <div class="row d-flex align-items-stretch">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni, inseriscene uno nuovo o modifica.</p>
+            <p style="text-align:center"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+                <h5 class="card-title">ATTIVITA'</h5>
+                <p class="card-text">Processo di autorizzazione della richiesta.</p>
+                <p style="text-align:center"><a href="{% url 'attivita' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+                <div class="card-body">
+                <h5 class="card-title">PIANO INVESTIMENTI</h5>
+                <p class="card-text ">Visualizza il Piano Investimenti, inserisci un nuovo investimento o modifica gli esistenti.</p>
+                <p style="text-align:center"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+                <h5 class="card-title"> INSERISCI LE SPECIFICHE</h5>
+                <p class="card-text">Inserisci le specifiche dei fabbisogni di investimenti avviati oppure crea un nuovo fabbisogno da associare ad una voce sacco del P.I.</p>
+                <p style="text-align:center"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">NOTIFICHE FAB</h5>
+            <p class="card-text">Visualizza le proprie notifiche FAB</p>
+            <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+
+        <div class="col-sm-4">
+                <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+                <div class="card-body">
+                    <h5 class="card-title">GARE</h5>
+                    <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                    <p style="text-align:center"><a href="{% url 'home' Gare %}" class="btn btn-primary">VAI</a></p>
+                </div>
+                </div>
+        </div>
+
+            
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza, Definisci o modifica le priorità.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 144, 120)">
+            <div class="card-body">
+                <h5 class="card-title">GRUPPI</h5>
+                <p class="card-text">Visualizza, definisci o modifica i gruppi di appartenenza.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var2 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+        <br>
+    <div class="row  d-flex align-items-stretch">
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 124, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PROFILI PROFESSIONALI</h5>
+                <p class="card-text">Visualizza, definisci o modifica i profili professionali degli utenti medici.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var3 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 124, 120)">
+            <div class="card-body">
+                <h5 class="card-title">SEDE e REPARTI</h5>
+                <p class="card-text">Visualizza, definisci o modifica le sede ed i reparti degli utenti medici.</p>
+                <p style="text-align:center"><a href="{% url 'serepreg' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza, definisci o modifica le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row  d-flex align-items-stretch">
+        <div class="card h-100" style="background-color: rgb(139, 167, 144)">
+            <div class="card-body">
+            <h5 class="card-title">PROFILI UTENTI</h5>
+            <p class="card-text">Gestisci i profili dei diversi utenti.</p>
+            <p style="text-align:center"><a href="{% url 'tuttiprofili' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+    </div>
+    <br>
+    </div>
+   
+
+{% elif var == '6' %} <!--SUPERUSER-->
+    <div class="row">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align:center"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti</p>
+            <p style="text-align:center"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+    <div class="col-sm-4"></div>
+    <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+        <div class="card-body">
+        <h5 class="card-title">NOTIFICHE FAB</h5>
+        <p class="card-text">Visualizza le proprie notifiche FAB</p>
+        <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+    </div>
+    </div>
+    
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+                <h5 class="card-title">VALUTA LE SPECIFICHE</h5>
+                <p class="card-text">Valuta le specifiche dei fabbisogni avviati.</p>
+                <p style="text-align:center"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    
+    
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align:center"><a href="{% url 'home' Gare %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row  d-flex align-items-stretch">
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza, definisci o modifica le priorità</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza, definisci o modifica le ubicazioni e i loro CDC</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">ATTIVITA'</h5>
+                <p class="card-text">Processo di autorizzazione della richiesta.</p>
+                <p style="text-align:center"><a href="{% url 'attivita' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+       
+    </div>
+{% elif var == '4' %}  <!--PROVVEDITORATO-->
+    <div class="row">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align: center;"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+       
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti.</p>
+            <p style="text-align: center;"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div> 
+
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align: center;"><a href="{% url 'home' Gare %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza le priorità.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+    <div class="col-sm-4"></div>
+    <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+        <div class="card-body">
+        <h5 class="card-title">NOTIFICHE FAB</h5>
+        <p class="card-text">Visualizza le proprie notifiche FAB</p>
+        <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+    </div>
+    </div>
+    </div>
+
+{% elif var == '2' %} <!--ING.CLINICO-->
+    <div class="row">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align:center"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+       
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti.</p>
+            <p style="text-align:center"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+                <h5 class="card-title">VALUTA LE SPECIFICHE</h5>
+                <p class="card-text">Valuta le specifiche dei fabbisogni avviati.</p>
+                <p style="text-align:center"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align:center"><a href="{% url 'home' Gare %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Definisci o modifica le priorità.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row  d-flex align-items-stretch">
+    <div class="col-sm-4"></div>
+    <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+        <div class="card-body">
+        <h5 class="card-title">NOTIFICHE FAB</h5>
+        <p class="card-text">Visualizza le proprie notifiche FAB</p>
+        <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+    </div>
+    </div>
+    <div class="col-sm-4 ">
+        <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+        <div class="card-body">
+            <h5 class="card-title">ATTIVITA'</h5>
+            <p class="card-text">Processo di autorizzazione della richiesta.</p>
+            <p style="text-align:center"><a href="{% url 'attivita' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+        </div>
+    </div>
+
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza, definisci o modifica le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        
+
+    </div>
+    </div>
+{% elif var == '3' %} <!--dir. medica-->
+    <div class="row">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align:center"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti.</p>
+            <p style="text-align:center"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+                <h5 class="card-title">VALUTA LE SPECIFICHE</h5>
+                <p class="card-text">Valuta le specifiche dei fabbisogni avviati.</p>
+                <p style="text-align:center"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align:center"><a href="{% url 'home' Gare %}"class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza le priorità.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+    <div class="col-sm-4"></div>
+    <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+        <div class="card-body">
+        <h5 class="card-title">NOTIFICHE FAB</h5>
+        <p class="card-text">Visualizza le proprie notifiche FAB</p>
+        <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+    </div>
+    </div>
+    <div class="col-sm-4 ">
+        <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+        <div class="card-body">
+            <h5 class="card-title">ATTIVITA'</h5>
+            <p class="card-text">Processo di autorizzazione della richiesta.</p>
+            <p style="text-align:center"><a href="{% url 'attivita' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+        </div>
+    </div>
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        
+
+    </div>
+    </div>
+    </div>
+
+
+    {% elif var == '7' %} <!--Primario-->
+    <div class="row">
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+            <h5 class="card-title">FABBISOGNI</h5>
+            <p class="card-text">Visualizza i fabbisogni ed inseriscene uno nuovo.</p>
+            <p style="text-align:center"><a href="{% url 'raccoltafabbisogni' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="card h-100" style="background-color: rgb(178, 178, 245)">
+            <div class="card-body">
+            <h5 class="card-title">RICERCA</h5>
+            <p class="card-text">Visualizza tutte le richieste di fabbisogno</p>
+            <p style="text-align: center;"><a href="{% url 'pagina_ricerca' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+            <div class="card-body">
+            <h5 class="card-title">PIANO INVESTIMENTI</h5>
+            <p class="card-text">Visualizza il Piano Investimenti.</p>
+            <p style="text-align:center"><a href="{% url 'pianodiinvestimenti' %}" class="btn btn-primary">VAI</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(153, 153, 249)">
+            <div class="card-body">
+                <h5 class="card-title">VALUTA LE SPECIFICHE</h5>
+                <p class="card-text">Valuta le specifiche dei fabbisogni avviati.</p>
+                <p style="text-align:center"><a href="{% url 'home' altro %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+            <div class="card-body">
+                <h5 class="card-title">GARE</h5>
+                <p class="card-text">Visualizza le Gare ed il loro stato.</p>
+                <p style="text-align:center"><a href="{% url 'home' Gare %}"class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4 ">
+            <div class="card h-100" style="background-color: rgb(209, 163, 120)">
+            <div class="card-body">
+                <h5 class="card-title">PRIORITA'</h5>
+                <p class="card-text">Visualizza le priorità.</p>
+                <p style="text-align:center"><a href="{% url 'priorita' var1 %}" class="btn btn-primary">VAI</a></p>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="row  d-flex align-items-stretch">
+    <div class="col-sm-4"></div>
+    <div class="card h-100" style="background-color: rgb(162, 162, 245)">
+        <div class="card-body">
+        <h5 class="card-title">NOTIFICHE FAB</h5>
+        <p class="card-text">Visualizza le proprie notifiche FAB</p>
+        <p style="text-align: center;"><a href="{% url 'notificheFAB' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+    </div>
+    </div>
+    <div class="col-sm-4 ">
+        <div class="card h-100" style="background-color: rgb(140, 140, 230)">
+        <div class="card-body">
+            <h5 class="card-title">ATTIVITA'</h5>
+            <p class="card-text">Processo di autorizzazione della richiesta.</p>
+            <p style="text-align:center"><a href="{% url 'attivita' %}" class="btn btn-primary">VAI</a></p>
+        </div>
+        </div>
+    </div>
+        <div class="col-sm-4">
+            <div class="card h-100" style="background-color: rgb(241, 208, 147)">
+                <div class="card-body">
+                <h5 class="card-title">UBICAZIONI E CDC</h5>
+                <p class="card-text">Visualizza le ubicazioni e i loro CDC.</p>
+                <p style="text-align:center"><a href="{% url 'sedereparti' %}" class="btn btn-primary">VAI</a></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        
+
+    </div>
+    </div>
+    </div>
+{% endif %}
+{% endif %}
+{% endblock %}

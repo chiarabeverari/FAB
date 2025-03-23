@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Definisci la Priorità:</h3>
+<p><strong>Richiesta:</strong> {{ richiesta.Progressivo }} - {{ richiesta.Apparecchiatura }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Salva Priorità</button>
+</form>
+
+{% endblock %}

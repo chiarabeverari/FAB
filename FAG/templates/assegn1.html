@@ -1,0 +1,176 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% if user.is_authenticated %}
+
+<div style="font-size: 20px">
+    <table class="table table-striped table-bordered border-dark" style="background-color: rgb(133, 187, 252)">
+        <tr>
+            <th style=" border-right:0" width="400px">Sede - Reparto - SubReparto </th>
+            <td style="border-left: 0; " >{{att.Sede_Reparto}}</td>
+        </tr>
+        <tr>
+             <th style="border-right: 0; ">Compilatore</th>
+             <td style="border-left: 0; ">{{att.Compilatore}}</td>
+        </tr>
+        <tr>
+             <th style="border-right: 0; ">Direttore</th> 
+             <td style="border-left: 0; ">{{att.Direttore}}</td>
+        </tr>
+        <tr>
+         <th style="border-right: 0; ">Quantità</th> 
+        <td style="border-left: 0; ">{{att.Qta}}</td>
+        </tr>
+        <tr>
+            <th style="border-right: 0; ">Apparecchiatura</th>
+            <td style="border-left: 0; ">{{att.Apparecchiatura}}</td>
+        </tr>
+        <tr>
+             <th style="border-right: 0; ">Motivo per cui è richiesta l'attrezzatura</th>
+             <td style="border-left: 0; "> {% if att.Mot1_1 %}
+                 Sostituzione di analoga dismessa o in dismissione: {{att.SostNota}}<br>
+                 {% endif %}
+                 {% if att.Mot1_2 %}
+                 Implementazione/Aggiornamento di Attrezzatura/Sistema<br>
+                 {% endif %}
+                 {% if att.Mot1_3 %}
+                 Inizio nuova attività<br>
+                 {% endif %}
+             </td>
+        </tr> 
+        <tr>
+            <th style="border-right: 0; ">Necessità di infrastrutture particolari?</th>
+            <td style="border-left: 0; ">{% if att.NecInfraSI %} SI, in particolare: {{att.NecInfraNota}} {% endif %} {% if att.NecInfraNO %} NO {% endif %}</td>
+        </tr>
+            
+        <tr>
+            <th style="border-right: 0; ">Necessità di acquisire nuovo personale?</th>
+            <td style="border-left: 0; ">{% if att.NewPersSI %} SI {{ NewPersNO }} {% else %} NO {% endif %}</td>
+        </tr>
+        
+    {% if att.Stato.Numero > 1 %}
+    <tr>
+         <th style="border-right: 0; "> Valutazione dei motivi </th>: 
+         {% if att.ValMot %}
+         <td style="border-left: 0; ">Congruo </td>
+         {% else %} 
+         <td style="border-left: 0; ">Non Congruo </td>
+         {% endif %} 
+     </tr>
+     <tr>
+         <th style="border-right: 0; ">Nota Valutazione</th>
+         <td style="border-left: 0; ">{{att.ValMotNota}}</td>
+     </tr>
+     <tr>
+         <th style="border-right: 0; ">Valutazione Eseguita da</th>
+         <td style="border-left: 0; ">{{att.ValUtente}}</td>
+     </tr>
+     <tr>        
+         <th style="border-right: 0; ">in Data</th>
+         <td style="border-left: 0; ">{{att.ValData}}
+     </tr>
+    {% endif %} 
+    <tr>
+         <th style="border-right: 0; "> Motivi per cui si richiede l'implementazione/aggiornamento di attrezzatura/sistema</th>
+         <td style="border-left: 0; ">
+         {% if att.Mot2_1 %} 
+             Mantenimento/Recupero delle prestazioni e/o della sicurezza<br>
+         {% endif %} 
+         {% if att.Mot2_2 %} 
+             Aumento/miglioramento delle prestazioni</br>
+         {% endif %}
+         </td>
+     </tr>
+    <tr>
+        <th style="border-right: 0; ">L'aggiornamento consiste in</th>
+        <td style="border-left: 0; ">{{att.AggNota}}</td>
+     </tr>
+ </div>
+ </table>
+
+ <div class="center2">
+    <h5><b> Consumabili particolarmente onerosi </b></h5>
+    <table class="table table-striped table-bordered border-dark" style="background-color: rgb(133, 187, 252)">
+        <tbody>
+            <tr style="background-color: rgb(56, 56, 250);">
+                <th style=" color: white;">Tipo di consumabile</th>
+                <th style=" color: white;">Costo Unitario (Euro)</th>
+                <th style=" color: white;">Consumo Medio (Unità)</th>
+                <th style=" color: white;">Totale (Euro)</th>
+            </tr>
+            {% for con in cons %}
+            <tr>
+            <td>{{con.Tipo}}</td>
+            <td>{{con.CostoUnitario}}</td>
+            <td>{{con.ConsumoMedio}}</td>
+            <td>{{con.Totale}}</td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br> 
+   <b> Acquisto o Service o Noleggio</b>: 
+   {% if att.Acquisto %} 
+        Acquisto <br>
+        PREZZO IVA ESCLUSA: {{att.Prezzo_acquisto}}<br>
+        % IVA INDICATA: {{att.PercIVA}}
+    {% elif att.Noleggio %} 
+         Noleggio<br>
+         PREZZO IVA ESCLUSA: {{att.Prezzo_Noleggio}} <br>
+         % IVA INDICATA: {{att.PercIVA}}<br>
+         PER MESI: {{att.NolMesi}}<br>
+
+         Motivo per Noleggio: 
+         <ul>
+         {% if att.Tecnologico %}
+         <li>Tecnologico</li>
+         {% endif %}
+         {% if att.Valutativo %} 
+         <li>Valutativo</li>
+         {% endif %}
+         {% if att.Temporaneo %} 
+         <li>Temporaneo</li>
+         {% endif %}
+         {% if att.Economico %} 
+         <li>Economico</li>
+         {% endif %} 
+         {% if att.Gestionale %} 
+         <li>Gestionale</li>
+         {% endif %} 
+        </ul>   
+        NOTE: {{att.NotaNoleggio}}
+    {% elif att.Service %} 
+        Service<br>
+        PREZZO: {{att.Prezzo_Service}} <br>
+        % IVA INDICATA: {{att.PercIVA}}<br>
+        PER MESI: {{att.NolMesi}}<br>
+        Motivo per Service: 
+        <ul>
+        {% if att.Tecnologico %}
+        <li>Tecnologico</li>
+        {% endif %}
+        {% if att.Valutativo %} 
+        <li>Valutativo</li>
+        {% endif %}
+        {% if att.Temporaneo %} 
+        <li>Temporaneo</li>
+        {% endif %}
+        {% if att.Economico %} 
+        <li>Economico</li>
+        {% endif %} 
+        {% if att.Gestionale %} 
+        <li>Gestionale</li>
+        {% endif %} 
+       </ul>  
+       NOTE: {{att.NotaNoleggio}}
+    {% endif %}
+   <br> 
+<br>
+    </div>
+
+    <hr>
+    <a class="btn btn-primary" href="{% url 'assegn2' att.id var %}?{{request.GET.urlencode}}">PROCEDI</a>
+   
+
+{%endif%}
+{% endblock %}

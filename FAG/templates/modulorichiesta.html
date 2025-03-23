@@ -1,0 +1,489 @@
+{% load static %}
+
+<!DOCTYPE html>
+<style type="text/css">
+
+    table{
+        padding-top: 10px;
+        border-right: 1.5px solid black;
+        border-left: 1.5px solid black;
+
+    }
+    .intestazione {
+        padding-top: 10px;
+        border-right: 0.5px solid black;
+        border-left: 0.5px solid black;
+    }
+ 
+    .vuota {
+        background-color: grey;
+    }
+    .vuota2{
+        border-top: 0px;
+        border-bottom: 0px;
+        border-left:0px;
+        border-right:0px;
+    }
+    td{
+        margin-left: 2px;
+        border: 0.5px solid black;
+    }
+    th{
+        border: 0.5px solid black;
+    }
+
+    .interno {
+        border-top: 0.3px solid black;
+        border-bottom: 0.3px solid black;
+    }
+    
+    .center2 {
+    margin: auto;
+    width: 5%;
+    }
+@page {
+
+    size: a4 portrait;
+
+    @frame header_frame {           /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 50pt; width: 512pt; top: 50pt; height: 100pt;
+    }
+    @frame content_frame {          /* Content Frame */
+        left: 50pt; width: 512pt; top: 140pt; height: 632pt;
+    }
+    @frame footer_frame {           /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+    }
+}
+ 
+</style>
+<html>
+    <div id="header_content">
+       
+        <table style= '-pdf-keep-in-frame-mode: overflow;'> 
+            <tr>
+                <td rowspan="2" style="width:200px; height:200px;  padding-top:-20px; padding-bottom: -20px;"><img  src="{{imagepath}}" size=100></td>
+                <td style="font-size: 10px; width: 450px;"><center><b>MODULO</b></center></td>
+                <td style="font-size: 10px; width:110px; height:30px"><center><b>MD74200AZ.003</b></center></td>
+            </tr>
+            <tr>
+                <td style="font-size: 13px; font-weight: bold; width: 450px;"><center>RICHIESTA PER ACQUISIZIONE APPARECCHIATURE/SISTEMI BIOMEDICALI</center></td>
+                <td style="font-size: 10px;"> </td>
+            </tr>
+        </table>
+        <p style="text-align: right; padding-top: -40px; padding-right:20px">PAG. <pdf:pagenumber/> / <pdf:pagecount> </p>
+    </div>
+
+    <body>
+        
+        <table style="border-top: 1.5px solid black">
+            <tr>
+                <td style="font-weight: bold; width: 150px">SEDE - REPARTO - SUBREPARTO</td>
+                <td>{{att.Sede_Reparto | linebreaksbr  }}</td> 
+                <td style="font-weight: bold; width: 80px">DATA</td>
+                <td style=" width: 100px">{{att.Data.date}}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="vuota">  </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th style="font-size:13 px"width="40px">1</th>
+                <th style="font-size:13 px">TIPO DI APPARECCHIATURA O SISTEMA (BREVE DESCRIZIONE):</th>
+            </tr>
+        </table>
+        <table>
+            <tr >
+                <td colspan="2">
+                <table>
+                    <tr><td class="vuota2"></td></tr>
+                    <tr><td class="vuota2" style="font-weight: bold; font-size:12px;"> n. {{att.Qta}} di {{att.Apparecchiatura}}</td></tr>
+                    <tr ><td class="vuota2"></td></tr>
+                    <tr><td class="vuota2"></td></tr>
+                </table>
+                </td>
+            <tr>
+                <td colspan="2" style="font-weight: bold; font-size:10px; background-color:lightgrey;">Fonte di finanziamento: {{att.Fonte}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-bottom: 0px; font-weight:bold; background-color: lightgrey; border-left:0px">Necessità di modifiche/implementazioni infrastrutturali/strutturali?</td>
+            </tr>
+            <tr style="border-bottom: 0px">
+                {% if att.NecInfraNO %} <td width= "30px" style="border-top: 0px; border-bottom: 0px; border-right:0px; padding-left: -6.5px; padding-bottom: 4px; font-weight:bold; background-color: lightgrey;"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-top: 0px; border-bottom: 0px; border-right:0px; padding-bottom: 4px; font-weight:bold; background-color: lightgrey;"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %}
+                <td style="border-top: 0px; border-bottom: 0px; font-weight:bold; background-color: lightgrey; border-left:0px">NO</td>
+            </tr> 
+            <tr style="border-top:0px">
+
+                {% if att.NecInfraSI %} <td width= "30px" style=" border-top: 0px; border-right:0px; padding-left: -6.5px; padding-bottom: 4px; font-weight:bold; background-color: lightgrey;"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-top: 0px; border-right:0px; padding-bottom: 4px; font-weight:bold; background-color: lightgrey;"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %}<br><br>
+                </td>
+                <td style="border-top: 0px; font-weight:bold; background-color: lightgrey; border-left:0px">SI, in particolare: {{att.NecInfraNota}}</td>
+            </tr> 
+  
+        </table>
+        <table>
+            <tr>
+                <th style="font-size:13 px" width="40px">2</th>
+                <th style="font-size:13 px" colspan="2">MOTIVO PER CUI E' RICHIESTA L'ATTREZZATURA</th>
+            </tr>
+            <tr>
+                <td style="text-align:center" width="40px">2.1</td>
+                {% if att.Mot1_1 %} 
+                    <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img  src="{{checkpath}}"></td>
+                    {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px;">SOSTITUZIONE di analoga dismessa o in dismissione: (inv. {{att.SostNota}}) </td>
+            </tr>
+            <tr>
+                <td style="text-align:center" width="40px">2.2</td>
+                {% if att.Mot1_2 %} 
+                    <td  width= "30px"style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{checkpath}}"> </td>
+                    {% else %}  <td  width= "30px"style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %}</td>
+                <td  style="border-left:0px;">IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA</td>
+            </tr>
+            <tr>
+                <td style="text-align:center" width="40px">2.3</td>
+                {% if att.Mot1_3 %} 
+                <td  width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px" ><img width= 40px height= 30px src="{{checkpath}}"> </td>
+                    {% else %} <td  width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %}</td> 
+                <td   style="border-left:0px;">INIZIO NUOVA ATTIVITA'</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="vuota"> </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th style="font-size:13 px" width="40px">3</th>
+                <th style="font-size:13 px" colspan="2">DESCRIVERE I MOTIVI PER CUI SI RICHIEDE L'IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA</th>
+            </tr>
+            <tr>
+                <td style="text-align:center" width="40px">3.1</td>
+                {% if att.Mot2_1 %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px;">MANTENIMENTO/RECUPERO DELLE PRESTAZIONI E/O DELLA SICUREZZA </td>
+            </tr>
+            <tr>
+                <td style="text-align:center" width="40px">3.2</td>
+                {% if att.Mot2_2 %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px;">AUMENTO/MIGLIORAMENTO DELLE PRESTAZIONI</td>
+            </tr>
+            <tr>
+                <td style="text-align: right" width="80px">3.2.1</td>
+                <td style ="font-weight: bold; font-size:9px; line-height:15px"  colspan="2"> DESCRIVERE IN COSA CONSISTE L'AUMENTO DELLE PRESTAZIONI</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr><td class="vuota2"> </td></tr>
+                        <tr>
+                        <td class="vuota2">{{att.AggNota}} </td>
+                        </tr>
+                        <tr><td class="vuota2"></td></tr>
+                        <tr><td class="vuota2"></td></tr>
+                        <tr><td class="vuota2"></td></tr>
+                        <tr style="border-bottom: 1.5px solid black;"><td class="vuota2"></td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        {% if not att.AggNota %} 
+        <div>
+            <pdf:nextpage /> 
+        </div>
+        {% endif %}
+        
+    
+        <table style="border-top: 1.5px solid black">
+            <tr>
+                <th style="font-size:13 px" width="40px">4</th>
+                <th style="font-size:13 px"> DESCRIZIONE DELLE SPECIFICHE/CARATTERISTICHE TECNICHE E DELLE CORRELATE MOTIVAZIONI/ESIGENE CLINICHE</th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>SPECIFICHE/CARATTERISTICHE TECNICHE</th>
+                <th>m/M</th>
+                <th>USO MOTIVO CLINICO <br> per cui è richiesta una data specifica</th>
+                <th>U</th>
+                <th style="background-color:lightgray">Rif </th>
+            </tr>
+            {% for spec in specs %} 
+            <tr>
+                <td>{{spec.Specifica}}</td>
+                <td style="text-align:center" width="40px">{% if spec.Min %} m {% else %} M {% endif %}</td>
+                <td>{{spec.MotivoClinico}}</td>
+                {% if spec.Un %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %}</td>
+                <td style="font-weight:bold; text-align:center; background-color:lightgray" width="27px">{{spec.rif}}</td>
+            </tr>
+            {% endfor %}
+            </table>
+            <table>
+            <tr style="border-bottom: 1.5px solid black">
+                <td style="background-color: lightgray"></td>
+            </tr>
+        </table>
+    </div>
+
+     
+        
+    <br>
+        <table >
+            <tr style="border-top: 1.5px solid black;">
+                <th style="font-size:13 px" width="40px">4.2</th>
+                <th style="font-size:13 px"> UNICITA' DELLE CARATTERISTICHE</th>
+            </tr>
+            <tr>
+                {% if att.Simili %}<td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="font-weight: bold; border-left:0px;">Alcune caratteristiche riportate nell'elenco precedente individuano una apparecchiatura o sistema; <u>in paricolare si dichiara che non esistono sul mercato attrezzature simili idonee ad assolvere la funzione indicata.</u> Riportare sotto il riferimento numerico di tali caratteristiche e motivarne le necessità dal punto di vista clinico.</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="color:gray; font-size:8px;"> &dArr; riportare sotto i numeri di riferimento corrispondenti alle caratteristiche</td>
+            </tr>
+            {% for un in uns %} 
+            <tr>
+                <td style="text-align: center; background-color: lightgray">{{un.rifext.rif}}</td>
+                <td>{{un.Nota}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td style="background-color:lightgray"> </td>
+                <td></td>
+            
+            
+            </tr>
+        </table>
+        <table>
+            <tr style="border-bottom: 1.5px solid black;">
+                <td style="background-color:lightgray"> </td>
+            </tr>
+        </table>
+    <br>
+    
+        <table style="border-top: 1.5px solid black">
+            <tr>
+                <th style="font-size:13 px" width="40px">4.3</th>
+                <th style="font-size:13 px"> CRITERIO DI VALUTAZIONE QUALITA' </th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th width="600px"> CRITERIO </th>
+                <th> PESO <r> in %</th>
+                <th width=50px style="text-align:center; background-color: lightgray"> Rif.to </th>
+            </tr>
+            {% for cr in crs %} 
+            <tr>
+                <td>{{cr.Criterio}}</td>
+                <td>{{cr.Peso}}</td>
+                <td style="text-align: center; background-color: lightgray">{{cr.Rif}}</td>   
+            </tr>
+            {% endfor %}
+        </table>
+        <table>
+            <tr style="border-bottom: 1.5px solid black;">
+            <td style="background-color:lightgray;"> </td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+        <table style="border-top: 1.5px solid black">
+            <tr>
+                <th style="font-size:13 px" width="40px">5</th>
+                <th style="font-size:13 px"> CONSUMABILI PARTICOLARMENTE ONEROSI </th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th width="500px"> Tipo di consumabile </th>
+                <th> Costo unitario presunto <br> (euro)</th>
+                <th> Consumo medio relativo al periodo di utilizzo <br> (unità) </th>
+                <th> Periodo di utilizzo (anni) </th>
+                <th> Totale <br> (euro) </th>
+            </tr>
+            {% for con in cons %} 
+            <tr>
+                <td>{{con.Tipo}}</td>
+                <td>{{con.CostoUnitario}}</td>
+                <td>{{con.ConsumoMedio}}</td>
+                <td>{{con.Periodo}}</td>
+                <td>{{con.Totale}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table>
+            <tr >
+                <td style="background-color: lightgray"></td>
+            </tr>
+        </table>
+        <br>
+        <table>
+            <tr style="border-top: 1.5px solid black">
+                <th style="font-size:13 px; border: 0.5px solid black" width="40px">5.1</th>
+                <th  style=" font-size:13 px; border: 0.5px solid black" colspan="6"> ACQUISTO o SERVICE o NOLEGGIO </th>
+            </tr>
+            <tr> 
+                <td  style="border: 0.5px solid black; font-weight: bold; text-align: center;" rowspan=2 >5.1.1</td>
+                {% if att.Acquisto %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px; border-right: 0.5px solid black;"colspan="4"> <b> ACQUISTO</b></td>
+                <td rowspan = 4 style="font-weight:bold; font-size:9px;"> INDICARE LA % IVA DA APPLICARE: <br> {{att.PercIVA}} %</td>
+            </tr>
+            <tr>
+                <td  style="border: 0.5px solid black" colspan="5"><b> Prezzo <i>totale</i> presunto IVA esclusa</b>: {{att.Prezzo_acquisto}} </td>
+            </tr>
+            <tr> 
+                <td style='font-weight: bold; border: 0.5px solid black; text-align: center;'rowspan="2">5.1.2</td>
+                {% if att.Service %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px;"><b> SERVICE </b></td>
+                {% if att.Noleggio %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="border-left:0px;"><b> NOLEGGIO </b> </td>
+                <td style="border-right: 0.5px solid black"><b>per mesi:</b> {% if att.NolMesi %} {{att.NolMesi}} {% endif %} </td>
+            </tr>
+            <tr>
+                <td style="border: 0.5px solid black"colspan="5"><b> Prezzo <i>totale</i> presunto IVA esclusa</b>: {% if att.Service %} {{att.Prezzo_Service}} {% endif %} {% if att.Noleggio %} {{att.Prezzo_Noleggio}} {% endif %}</td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td colspan="6"> <i>Motivo per cui l'attrezzatura è richiesta in service o noleggio </i>
+                    <table style="border-left: 0.3px solid black">
+                        <tr>
+                            <td style="font-weight: bold; border: 0.3px solid black " width="60px"> 5.1.2.1 </td>
+                            {% if att.Tecnologico %}<td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                            {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                            <td style="border-left:0px; border-top: 0.3px solid black"><b>tecnologico:</b> necessità di disporre sempre tecnologia  attuale</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; border: 0.3px solid black" width="60px"> 5.1.2.2 </td>
+                            {% if att.Valutativo %}<td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                            {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                            <td style="border-left:0px; border-top: 0.3px solid black"><b>valutativo:</b> introduzione di nuova tecnologia per cui si vuole, prima di un eventuale acquisto, verificarne l'utilizzabilità e l'efficacia.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; border: 0.3px solid black" width="60px"> 5.1.2.3 </td>
+                            {% if att.Temporaneoo %}<td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                            {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                            <td style="border-left:0px; border-top: 0.3px solid black"><b>temporaneo:</b>necessità di coprire un'esigenza limitata nel tempo</td> 
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; border: 0.3px solid black" width="60px"> 5.1.2.4 </td>
+                            {% if att.Economico %} <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                            {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                            <td style="border-left:0px; border-top: 0.3px solid black"><b>economico:</b> costi minore</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; border: 0.3px solid black" width="60px"> 5.1.2.5 </td>
+                            {% if att.Gestionale %}<td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px"> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                            {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                            <td style="border-left:0px; border-top: 0.3px solid black;"><b>gestionale: </b>migliore gestione del servizio</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"> (&dArr;) NOTA - nel caso di risposta 5.1.2.4 e/o 5.1.2.5 specificare nello spazio sotto in cosa consiste l'economicità e/o la migliore gestibilità</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{att.NotaNoleggio}}</td>
+                        </tr>
+                    </table></td>
+            </tr>
+        </table>
+        <table>
+            <tr style="border-bottom: 1.5px solid black;">
+                <td style ="background-color: lightgray;">
+                </td>
+            </tr>
+        </table>
+ 
+    <br>
+        <table style="border-top: 1.5px solid black">
+            <tr>
+                <td width="110px" style=" font-size:13 px; font-weight: bold; text-align:center">5.2</td>
+                <td colspan=3 style="font-size:13 px; font-weight: bold;">ELENCO DELLE POSSIBILI DITTE FORNITRICI</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th width="300px">NOME DITTA</th>
+                <th>TELEFONO</th>
+                <th>EMAIL</th>
+                <th width="50px">Rif.to</th>
+            </tr>
+            {% for ditta in ditte %}
+            <tr>
+                <td>{{ditta.NomeDitta}}</td>
+                <td>{{ditta.ContattoTel}}</td>
+                <td>{{ditta.ContattoEM}}</td>
+                <td style="text-align:center">{{ditta.Rif}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td style="background-color: lightgray"> </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="background-color: lightgray; border-bottom: 1.5px solid black;"></td>
+            </tr>
+        </table>
+        <br>
+        <table style="border-top: 1.5px solid black;">
+            <tr>
+                <td width="37px" style="font-size:13 px; font-weight: bold ">6</td>
+                <td style="font-size:13 px; font-weight: bold;">DATI DEL DOCUMENTO</td>
+            </tr>
+        </table>
+        
+            <table>
+            <tr>
+                <td colspan="2">COMPILATORE:</td>
+                <td rowspan=2 width="500px">FIRMA</td>
+            </tr>
+            <tr>
+                <td colspan="2">{{att.Compilatore}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">DIRETTORE:</td>
+                <td rowspan="2" width="500px">FIRMA</td>
+            </tr>
+            <tr>
+                <td colspan="2" width="350px">{{att.Direttore}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">elenco allegati</td>
+                <td> </td>
+            </tr>
+            {% for all in alls %}
+            <tr>
+                <td colspan="2">{{all.Allegato}}</td>
+                <td>{{all.N_pag}}</td>
+            </tr>
+            {% endfor %}
+            </table>
+            <table>
+            <tr style="border-bottom: 1.5px solid black;">
+                <td style="background-color: lightgrey; text-align: right; font-size:7px;"> fine documento </td>
+            </tr>
+        </table>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %} 
+<h1><center>Registra un nuovo utente</center></h1>
+                          
+<table>
+	<form method="POST" class="needs-validation" novalidate="" autocomplete="off">
+		{% csrf_token %}
+		{% for field in form %}
+		<p>
+			<div class="mb-3">
+				<label class="mb-2">{{field.label}}</label> <br>
+				{{ field }}
+			</div> 
+			{% for error in field.errors %}
+			<p styke="color: red"> {{error}}</p>
+			{% endfor %}
+		</p>
+		{% endfor %}
+		<div class="mb-3">
+			<button type="submit" class="btn btn-primary ms-auto">
+				Registra
+			</button>
+		</div>
+	</table>
+
+
+{% endblock %}

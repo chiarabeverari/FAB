@@ -1,0 +1,64 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% if user.is_authenticated %}
+<h2>ASSEGNAZIONE PRIORITA'</h2>
+<br>
+<div>
+    <a class="btn btn-primary" href="{% url 'export-excelass' %}?{{request.GET.urlencode}}">Export EXCEL</a>
+</div>
+<br>
+<strong>Elenco Richieste Programmate:</strong>
+<br>
+<div style="max-height: 700px; overflow-y: auto;">
+     <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>Assegn. Prior.</th>
+                    <th>Progr. </th>
+                    <th>Sede - Reparto - SubReparto </th>
+                    <th>Apparecchiatura</th>
+                    <th>Q.tà</th>
+                    <th>Priorità </th>
+                    <th>Costo Presunto (IVA escl.)</th>
+                    <th>Costo Presunto (IVA incl.) </th>
+                    <th>Compilatore</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+                </tr>
+                
+            </thead>
+            <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att in richieste_fabbisogni %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td>{{att.AssegnPrior}}</td>
+                        <td style="font-weight: bold;">{{att.Progressivo}}</td>
+                        <td>{{att.Sede_Reparto}}</td>
+                        <td>{{att.Apparecchiatura}}</td>
+                        <td>{{att.Qta}}</td>
+                        <td>{{att.Priorita}}</td>
+                        <td>{{att.Costo_Presunto_NOIVA}}</td>
+                        <td>{{att.Costo_Presunto_IVA}}</td>
+                        <td>{{att.Compilatore}}</td>
+                        <td style="font-weight:bold;">{% if att.ID_PianoInvestimenti is not None %} {{att.ID_PianoInvestimenti}} {% endif %}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2%}">Visualizza</a> 
+                            <br> <br> <a class="btn btn-sm btn-info" href="{% url 'assegn1' att.id opt%}">Assegna Priorità</a> <br> <br></td>
+                    </tr>
+                    
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type=submit></td></tr>
+                </form>
+            </tbody>
+        </table>
+            </div>
+</p> 
+
+{%endif%}
+{%endblock%}

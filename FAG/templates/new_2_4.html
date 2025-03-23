@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %} 
+<br>
+{% if user.is_authenticated %}
+{% if var == '3' %}
+<ul class="nav nav-tabs">
+  <li class="nav-item" style="background-color:rgb(196, 196, 252); color:white;">
+    <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+  </li>
+  <li class="nav-item" style="background-color:powderblue;">
+    <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+  </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% endif %}
+<div style="position:relative; left:20px">
+  <a class="btn-sm btn-info" href="{% url 'attachements' att.id var %}"> &#x2190; </a>
+  <a class="btn-sm btn-info" href="{% url 'new_4e2' att.id var %}">&#x2192;</a>
+  
+</div>
+
+<center><h3><b> 4 DESCRIZIONE DELLE SPECIFICHE/CARATTERISTICHE TECNICHE E DELLE CORRELATE MOTIVAZIONI/ESIGENZE CLINICHE </b></h3>
+<br>
+<h3>{{ att.Apparecchiatura }}</h3>
+</center>
+
+{% if k == 2 %} 
+<table class="table table-secondary table-striped">
+  <form method="POST" >
+    {% csrf_token %}
+    <tbody>
+       <thead>
+          <tr>
+              <th>Rif.</th>
+              <th>Specifica</th>
+              <th>MotivoClinico</th>
+              <th colspan="2">m/M</th>
+      </tr>
+      </thead>
+      {% for spec in specs %}
+      <tr>
+      {% if spec == s %}
+      
+        <td>{{s.rif}}{{form.rif.as_hidden}}{{form.ID_rich.as_hidden}}</td>
+        <td>{{form.Specifica}}</td>
+        <td>{{form.MotivoClinico}}</td>
+        <td>m: {{form.Min}} <br> M: {{form.Max}} <b style="color: red;">{{form.Max.errors}}</b></td>
+        <td><input type="submit"></td>
+     
+      {% else %}
+      
+          <td>{{spec.rif}}</td>
+          <td>{{spec.Specifica}}</td>
+          <td>{{spec.MotivoClinico}}</td>
+          <td colspan="2">{% if spec.Min %}m{% else %} M{% endif %}</td>
+      {% endif %}
+      </tr>
+      
+      {% endfor %}
+  </tbody>
+</form>
+</table>
+
+{% else %}
+
+    <div> 
+      <table class="table">
+        <form method ='post' enctype ="multipart/form-data">
+            {% csrf_token %}
+            {{ form.ID_rich.as_hidden }}
+            {{ form.rif.as_hidden }}
+            <tr> <td>SPECIFICA: {{ form.Specifica }}
+            <br>
+            <br>
+            MOTIVO CLINICO: {{ form.MotivoClinico }}
+            <br>
+            <br>
+            <table>
+              <tr>
+                <td>Di minima <br> (obbligatoria) </td>
+                <td>{{form.Min}}</td>
+              </tr>
+              <tr>
+                <td>Di massima <br> (preferenziale)</td>
+                <td>{{form.Max}} <b style="color: red;">{{form.Max.errors}}</b></td>
+              </tr>
+            </table>
+            <br>
+          </td>
+          </tr>
+           <tr> <td><input type="submit" value = "Submit"></td>
+           </tr>
+        </form>
+      </table>
+    </div>
+    <br>
+    <div class="center"> 
+    <table class="table table-secondary table-striped">
+        <tbody>
+             <thead>
+                <tr>
+                    <th>Rif.</th>
+                    <th>Specifica</th>
+                    <th>MotivoClinico</th>
+                    <th>m/M</th>
+                    <th>Modifica</th>
+                    <th>Rimuovi</th>
+            </tr>
+            </thead>
+            {% for spec in specs %}
+            <tr>
+                <td>{{spec.rif}}</td>
+                <td>{{spec.Specifica}}</td>
+                <td>{{spec.MotivoClinico}}</td>
+                <td>{% if spec.Min %}m{% else %} M{% endif %}</td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'modificaspecifica' spec.id var %}">Modifica</a></td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'deletespecifiche' spec.id var %}">Rimuovi</a></td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+     </table>
+     </div>
+{% endif %}
+{% endif %}
+{% endblock %}

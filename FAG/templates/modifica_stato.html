@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% if user.is_authenticated %}
+<br>
+<form method="GET">
+    {% if admin_roles %}
+        <label for="ruolo">Scegli un ruolo:</label>
+        <select name="ruolo" id="ruolo" onchange="this.form.submit()">
+            <option value="">-- Seleziona un ruolo --</option>
+            {% for ruolo in admin_roles %}
+                <option value="{{ ruolo }}" {% if request.GET.ruolo == ruolo %}selected{% endif %}>
+                    {{ ruolo }}
+                </option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <p>Debug: Nessun ruolo disponibile per il superuser.</p>
+    {% endif %}
+</form>
+
+{% if ruolo_scelto %}
+    <form method="POST">
+        {% csrf_token %}
+        <label for="stato">Cambia stato:</label>
+        <select name="stato" id="stato">
+            {% for stato in opzioni_stato %}
+                <option value="{{ stato }}">{{ stato }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="commento">Aggiungi un commento (opzionale):</label>
+        <textarea name="commento" id="commento" rows="3"></textarea>
+
+        <button type="submit">Salva</button>
+    </form>
+{% else %}
+    <p><strong>⚠️ Nessuna opzione di stato disponibile!</strong></p>
+    <p>Seleziona un ruolo per vedere gli stati disponibili.</p>
+{% endif %}
+
+{% endif %}
+{% endblock %}

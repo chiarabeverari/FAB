@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<p> Sei sicuro di voler eliminare {{profilo}}?</p>
+
+<form method = "POST">
+    {% csrf_token %}
+    <a href="{% url 'tuttiprofili' %}">Indietro</a>
+    <input type="submit" name="Conferma">
+
+</form>
+{% endif %}
+{% endblock %}

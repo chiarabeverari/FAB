@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<a href="{% url 'new_urg_5' att.id %}" class="btn btn-warning">Indietro</a> 
+<br>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" name="Termina" class="btn btn-primary">Termina</button>
+</form>
+
+<center>
+    <h2><b>5.2 ELENCO DELLE POSSIBILI DITTE FORNITRICI</b></h2>
+    <h3>{{att.Apparecchiatura}}</h3>
+</center>
+
+<div> 
+    <form action ="" method="POST">
+        {% csrf_token %}
+        {{form.ID_rich.as_hidden}}
+        DITTA: {{form.NomeDitta}}<br>
+        {{form1.Rif.as_hidden}} <br>
+        CONTATTO E-MAIL: {{form.ContattoEM}} <br>
+        CONTATTO TEL: {{form.ContattoTel}} <br>
+    
+        <input type="submit" name="Aggiungi">
+    </form>
+    </div>
+    <br>
+    <div>      
+    <div class="center"; style="display: block; margin-top:50px; padding-top:20px;">
+        <table class="table table-secondary table-striped">
+            <tbody>
+                <tr>
+                    <th>Rif.</th>
+                    <th>Nome Ditta</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Rimuovi</th>
+                </tr>
+                {% for ditta in ditte %}
+                <tr>
+                <td>{{ditta.Rif}}</td>
+                <td>{{ditta.NomeDitta}}</td> 
+                <td>{{ditta.ContattoTel}}</td> 
+                <td>{{ditta.ContattoEM}}</td> 
+                <td><a class="btn btn-sm btn-info" href="{% url 'deletedittaurg' ditta.id %}">Elimina</a></td>
+                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endif %}
+{%endblock%}

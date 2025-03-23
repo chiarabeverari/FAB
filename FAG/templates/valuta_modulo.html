@@ -1,0 +1,33 @@
+<h2>Valuta Modulo: {{ modulo.nome }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="stato">Stato:</label>
+    <select name="stato" id="stato">
+        {% if modulo.stato == 'bozza' %}
+            {% if user.groups.filter(name='DIR. MEDICA').exists %}
+                <option value="definitiva">Definitiva</option>
+                <option value="rifiutata_dir">Rifiutata da Dir</option>
+            {% endif %}
+        {% elif modulo.stato == 'definitiva' %}
+            {% if user.groups.filter(name='DAA').exists %}
+                <option value="spedita">Spedita</option>
+                <option value="negata_daa">Negata da DAA</option>
+            {% endif %}
+        {% elif modulo.stato == 'spedita' %}
+            {% if user.groups.filter(name='ING. CLINICO').exists %}
+                <option value="approvata">Approvata</option>
+                <option value="non_approvata">Non Approvata</option>
+            {% endif %}
+        {% endif %}
+    </select>
+
+    <label for="commento">Commento:</label>
+    <textarea name="commento" id="commento">{{ modulo.commento }}</textarea>
+
+    <button type="submit">Procedi</button>
+</form>
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}

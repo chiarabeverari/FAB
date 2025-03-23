@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+
+{% if user.is_authenticated %}
+
+<h5>AGGIUNGI UN UTENTE</h5>
+<a href="{% url 'registranew' %}" class="btn btn-sm btn-success">AGGIUNGI</a> <hr>
+
+<h5>PROFILI UTENTE REGISTRATI</h5> <br>
+<div style="max-height: 700px; overflow: auto; ">
+<table class="table table-striped">
+    <thead style="position: sticky;  top: 0; z-index: 0;">
+        <tr style="background-color: rgb(34, 30, 113); color:white; ">
+            <th>NOME</th>
+            <th>COGNOME</th>
+            <th>USERNAME</th>
+            <th>GRUPPO</th>
+            <th>Modifica</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profilo in profili %}
+        <tr style="background-color:rgb(131, 183, 246)">
+            <td>{{profilo.Nome}}</td>
+            <td>{{profilo.Cognome}}</td>
+            <td>{{profilo.username}}</td>
+            <td>{{profilo.Gruppo}}</td>
+            <td><a class="btn btn-sm btn-warning" href ="{% url 'modificauser' profilo.id %}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-danger" href ="{% url 'rimuoviuser' profilo.id %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<h4>AGGIORNA I MOTIVI</h4>
+<table>
+    <form method="POST">
+        {% csrf_token %}
+        <h6><b>2 | MOTIVO PER CUI E' RICHIESTA L'ATTREZZATURA</b></h6>
+        <br>
+        {{formmot.Mot1_1}} SOSTITUZIONE di analoga dismessa o in dismissione: {{formmot.SostNota}}
+        <br>
+        {{formmot.Mot1_2}} IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA
+        <br>
+        {{formmot.Mot1_3}} INIZIO NUOVA ATTIVITA' (PER ATTIVITA' MAI ESEGUITE PRIMA)
+        <br>
+        <br>
+        <hr style="color: black;">
+        <h6><b>3 | DESCRIVERE I MOTIVI PER CUI SI RICHIEDE L'IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA </b></h6>
+        <br>
+        {{formmot.Mot2_1}} MANTENIMENTO/RECUPERO DELLE PRESTAZIONI E/O DELLA SICUREZZA
+        <br>
+        {{formmot.Mot2_2}} AUMENTO/MIGLIORAMENTO DELLE PRESTAZIONI 
+        <br>
+        <br>
+        DESCRIVERE IN COSA CONSISTE L'AUMENTO DELLE PRESTAZIONI: <br>{{formmot.AggNota}}<br>
+        <input type="submit" name="Motivi">
+    </form>
+</table>
+<br>
+<hr>
+<h4>AGGIORNA LE SPECIFICHE</h4>
+<div> 
+    <form method="post">
+        {% csrf_token %}
+        {{formset.management_form}}
+        <table class="table table-striped">
+            <tr >
+                <thead style="background-color: blue; color:white">
+                    <th>Rif.</th>
+                    <th>Specifica</th>
+                    <th>m/M</th>
+                    <th>Motivo Clinico</th>
+                    <th>Valutazione tecnica</th>
+                    <th>Valutazione clinica</th>
+                </thead>
+            </tr>
+        {% for spec,form,b in insieme %}
+        {% if b %}
+        <tr style="background-color: yellow;">
+            <td style="color: brown; font-weight:bold;" > {{spec.rif}} </td>
+            <td style="color: brown; font-weight:bold;">{{form.Specifica}}{{form.id.as_hidden}}</td>
+            <td style="color: brown; font-weight:bold;"> m {{form.Min}} <br> M {{form.Max}}</td>
+            <td style="color: brown; font-weight:bold;">{{form.MotivoClinico}}</td>
+            <td style="color: brown; font-weight:bold;">{{spec.ValSpecTec}}<br>({{spec.ValTecUtente}})</td>
+            <td style="color: brown; font-weight:bold;">{{spec.ValSpecCli}}<br>({{spec.ValCliUtente}})</td>
+        {% else %}
+            <tr style="background-color: rgb(187, 187, 254);">
+                <td > {{spec.rif}} </td>
+                <td>{{form.Specifica}}{{form.id.as_hidden}}</td>
+                <td>m {{form.Min}} <br> M {{form.Max}}</td>
+                <td>{{form.MotivoClinico}}</td>
+                <td>{{spec.ValSpecTec}}<br>({{spec.ValTecUtente}})</td>
+                <td>{{spec.ValSpecCli}}<br>({{spec.ValCliUtente}})</td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+    
+    </table>
+        <input type="submit" name="Specifiche">
+    </form>
+    
+</div>
+
+{% endif %}
+{% endblock %}

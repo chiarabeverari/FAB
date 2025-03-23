@@ -1,0 +1,91 @@
+body {
+    background-color:rgb(212, 236, 250);
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+}
+
+table {
+    background-color: rgb(212, 236, 250);
+    padding: 0;
+    border-collapse: collapse;
+    
+}
+
+a{
+    text-decoration: none;
+}
+.table2{
+    font-size: 14px;
+    padding: 0;
+
+}
+
+form{
+    width: 1100px;
+    height: 100px;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+
+.center2 {
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+.center3 {
+    margin: auto;
+    width: 85%;
+    padding: 10px;
+}
+.Stato0{
+    background-color:rgb(255, 84, 53);
+}
+
+.Stato1{
+    background-color:rgb(254, 112, 87);
+}
+
+.Stato2{
+    background-color:rgb(252, 135, 114);
+}
+
+
+.Stato3{
+    background-color:rgb(252, 163, 147);
+}
+
+.Stato4{
+    background-color:rgb(122, 148, 233);
+}
+.Stato5{
+    background-color:rgb(153, 171, 233);
+}
+
+.Stato6{
+    background-color: rgb(188, 197, 230);
+}
+
+.Stato7{
+    background-color: rgb(209, 214, 230);
+}
+
+.Stato8{
+    background-color: rgb(141, 244, 187);
+}
+
+.Stato9{
+    background-color:rgb(5, 94, 20);
+    color: white;
+}
+.Stato10{
+    background-color: black;
+    color: white;
+}
+.Stato11{
+    background-color: rgb(255, 84, 53);
+
+}

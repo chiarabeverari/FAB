@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %} 
+<br>
+{% if user.is_authenticated %}
+{% if var == '3' %}
+<ul class="nav nav-tabs">
+    <li class="nav-item" style="background-color:rgb(196, 196, 252);">
+        <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+      </li>
+      <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% endif %}
+<center>
+<h2>{{ att.Apparecchiatura }}</h2>
+</center>
+<a class="btn-sm btn-info" href="{% url 'new_2_4' att.id var %}">&#x2192;</a>
+
+
+<div class="center">
+    <table class="table table-success table-striped" style="margin-right: auto; margin-left:auto;">
+        <tbody>
+            <thead>
+                <tr>
+                    <th>Q.tà</th>
+                    <th>Apparecchiatura</th>
+                    <th>Sede - Reparto - SubReparto</th>
+                    <th>Stato</th>
+                    <th>Data di inserimento</th>
+                </tr>
+            </thead>
+                <tr>
+                    <td>{{att.Qta}}</td>
+                    <td>{{att.Apparecchiatura}}</td>
+                    <td>{{att.Sede_Reparto | linebreaksbr}}</td>
+                    <td>{{att.Stato}}</td>
+                    <td>{{att.Data}}</td>   
+                </tr>
+         </tbody>
+    </table>
+</div>
+
+
+<hr>
+<div>
+    <div style="display: inline-block"> 
+        <form method ='post' enctype ="multipart/form-data">
+            {% csrf_token %}
+            {{form.ID_rich.as_hidden}}
+            NOME ALLEGATO: {{form.Allegato}} <br>
+            N° PAGINE: {{form.N_pag}} <br>
+            FILE : {{form.File}}
+            <input type="submit" value = "Submit">
+        </form>
+    </div>
+    <br>
+    <div style="display: inline-block"> 
+    <table class="table table-secondary table-striped">
+        <tbody>
+             <thead>
+                <tr>
+                    <th>Allegato</th>
+                    <th>Npag</th>
+                    <th>File</th>
+                    <th>Rimuovi</th>
+            </tr>
+            </thead>
+                {% for all in alls %}
+                <tr>
+                    <td>{{ all.Allegato }}</td>
+                    <td>{{ all.N_pag }}</td>
+                    <td>{{ all.File }}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'deleteattachements' all.id var %}">Rimuovi</a></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+     </table>
+     </div>
+</div>
+
+
+
+    
+       
+{% endif %}
+{% endblock %} 
+{% block footer %}
+
+{% endblock %}
+

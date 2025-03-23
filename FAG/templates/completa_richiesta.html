@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<h4> COMPLETA LA RICHIESTA: </h4>
+
+<ul class="nav flex-column">
+    <li class="nav-item">
+      Procedi scaricando il modulo<a class="btn btn-sm btn-success" href="{% url 'downloadfilledpdf' att.id %}">Scarica</a>
+    </li>
+    <ul>
+          Scaricando il modulo, l'utente si impegna ad eseguire correttamente le istruzioni: <b> caricarlo nuovamente sul sito solamente quando si vuole confermare la richiesta. </b>
+          <br> Se hai già scaricato il modulo, caricalo qui: <form method="POST" enctype ="multipart/form-data"> {% csrf_token %} {{form}}
+           <input type="submit" name="Carica">  </form>    
+    </ul>
+    <br> <b>OPPURE </b>
+    <li class="nav-item">
+      <a class="btn btn-sm btn-success" href="{% url 'aggiorna' att.id opt %}">Procedi online</a>
+    </li>
+  </ul>
+
+<br>
+{% endif %}
+{% endblock %}

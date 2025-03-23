@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<h3>Benvenuto/a  nella tua area notifiche <b><i>{{ user.Nome }} {{user.Cognome}}</i></b></h3>
+
+{% if is_admin %}
+    <form method="GET">
+        <label for="gruppo">Filtra per ruolo:</label>
+        <select name="gruppo" id="gruppo">
+            <option value="">-- Seleziona un ruolo --</option>
+            {% for gruppo in gruppi %}
+                <option value="{{ gruppo.Descrizione }}" {% if gruppo.Descrizione == gruppo_selezionato %}selected{% endif %}>
+                    {{ gruppo.Descrizione }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtra</button>
+    </form>
+{% endif %}
+
+<div style="max-height: 700px; overflow-y: auto;">
+    <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+        <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+            <tr>
+            <th>Data</th>
+            <th>Tipo Notifica</th>
+            <th>Sede-Reparto-Subreparto</th>
+            <th>Apparecchiatura</th>
+            <th>Compilatore</th>
+            <th>Azioni</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for notifica in notifiche_info %}
+            <tr>
+                <td>{{ notifica.data_creazione|date:"d/m/Y H:i" }}</td>
+                <td>{{ notifica.messaggio }}</td>
+                <td>{{ notifica.sede_reparto }}</td>
+                <td>{{ notifica.apparecchiatura }}</td>
+                <td>{{ notifica.compilatore }}</td>
+
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">Nessuna notifica</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+{%endif%}
+{%endblock%}

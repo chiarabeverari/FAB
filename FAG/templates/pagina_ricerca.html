@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca Richieste</title>
+    <style>
+        .Urgente { background-color: purple; color: white; }
+        .Programmata { background-color: lightblue; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: rgb(0, 60, 255);
+            color: azure;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<h1>Ricerca Richieste di Fabbisogno Programmate e Urgenti:</h1>
+<br>
+<form method="GET">
+    <!-- Filtro generale -->
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Cerca in tutti i campi...">
+    <button type="submit">Cerca</button>
+</form>
+
+{% if puo_vedere_tasto %}
+    <a class="btn btn-primary" href="{% url 'tab_assegnazioneprior' %}?{{request.GET.urlencode}}">Assegnazione Priorità</a>
+{%endif%}
+<br>
+<br>
+
+<div style="max-height: 700px; overflow-y: auto;">
+    <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+       <tbody>
+           <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+            <tr>
+            <form method="get">
+                <th>Stato Richiesta<br> {{fabfilter.form.StatoRic}}</th>
+                <th>Tipo </th>
+                <th>Progr.<br> {{ fabfilter.form.Progressivo }}</th>
+                <th>Sede-Reparto-Subreparto<br> {{ fabfilter.form.Sede }}</th>
+                <th>Apparecchiatura<br> {{ fabfilter.form.Apparecchiatura }}</th>
+                <th>Q.tà<br> {{ fabfilter.form.Qta }}</th>
+                <th>Priorità <br> {{ fabfilter.form.Priorita }}</th>
+                <th>Costo Presunto NO IVA<br> {{ fabfilter.form.Costo_Presunto_NOIVA }}</th>
+                <th>Costo Presunto IVA<br> {{ fabfilter.form.Costo_Presunto_IVA }}</th>
+                <th>Compilatore<br> {{ fabfilter.form.Compilatore }}</th>
+                <th>ID Inv.<br> {{ fabfilter.form.ID_PianoInvestimenti }}</th>
+                <th>NoteGen<br> {{ fabfilter.form.NoteGen }}</th>
+                <th>NoteStato</th>
+                <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+            </form>
+            </tr>
+            </thead>
+            <tbody>
+            <form method="POST">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for richiesta in richieste %}
+                    {% if not richiesta.Eliminato %}
+                    <tr>
+                        
+                        <td>{{ richiesta.StatoRic }}</td>
+                        <td class="{% if richiesta.tipo_richiesta == 'Urgente' %}urgente{% else %}programmata{% endif %}">
+                            {{ richiesta.tipo_richiesta }}
+                        </td>
+                        <td>{{ richiesta.Progressivo }}</td>
+                        <td>{{ richiesta.Sede_Reparto }}</td>
+                        <td>{{ richiesta.Apparecchiatura }}</td>
+                        <td>{{ richiesta.Qta }}</td>
+                        <td>{{ richiesta.Priorita }}</td>
+                        <td>{{ richiesta.Costo_Presunto_NOIVA }}</td>
+                        <td>{{ richiesta.Costo_Presunto_IVA }}</td>
+                        <td>{{ richiesta.Compilatore }}</td>
+                        <td>{{ richiesta.ID_PianoInvestimenti }}</td>
+                        <td>{{ richiesta.NoteGen }}</td>
+                        <td>{{richiesta.NoteStato}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'visualizzaricerca' pk=richiesta.id modello=richiesta.tipo_richiesta|title %}">
+                            Visualizza
+                        </a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </form>
+        </tbody>
+    </table>
+</div>
+<br> <br>
+<strong>Elenco Richieste inserimento specifiche:</strong>
+<br>
+<div style="max-height: 700px; overflow-y: auto;">
+    <table class="table table-striped" style="background-color:rgb(136, 163, 254);" >
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>Stato <br>{{mainfilter.form.StatoRic}}</th>
+                    <th>Tipo <br>{{mainfilter.form.Tipo}}</th>
+                    <th>Progr. <br> {{mainfilter.form.Progressivo}}</th>
+                    <th>Sede - Reparto - SubReparto <br> {{mainfilter.form.Sede}}</th>
+                    <th>Apparecchiatura<br> {{mainfilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà<br> {{mainfilter.form.Qta}}</th>
+                    <th>Priorità <br> {{mainfilter.form.Priorita}}</th>
+                    <th>Costo Presunto (IVA escl.)<br> {{mainfilter.form.Costo_Presunto_IVA}} </th>
+                    <th>Costo Presunto (IVA incl.)<br> {{mainfilter.form.Costo_Presunto_NOIVA}} </th>
+                    <th>Compilatore<br> {{mainfilter.form.Compilatore}}</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+                </tr>
+                
+            </thead>
+            <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att in insieme %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td>{{att.StatoRic }}</td>
+                        <td>{{att.Tipo}}</td>
+                        <td style="font-weight: bold;">{{att.Progressivo}}</td>
+                        <td>{{att.Sede_Reparto}}</td>
+                        <td>{{att.Apparecchiatura}}</td>
+                        <td>{{att.Qta}}</td>
+                        <td>{{att.Priorita}}</td>
+                        <td>{{att.Costo_Presunto_NOIVA}}</td>
+                        <td>{{att.Costo_Presunto_IVA}}</td>
+                        <td>{{att.Compilatore}}</td>
+                        <td style="font-weight:bold;">{% if att.ID_PianoInvestimenti is not None %} {{att.ID_PianoInvestimenti}} {% endif %}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2%}">Visualizza</a>  {% if avv %}{% else %} <br> <br> <a class="btn btn-sm btn-info" href="{% url 'aggiorna' att.id opt%}">Modifica Richiesta</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuovi' att.id %}">Rimuovi</a>{% endif %}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type=submit></td></tr>
+            </form>
+
+        </tbody>
+
+    </table>
+
+</div>
+</p> 
+
+
+{%endif%}
+{% endblock %}

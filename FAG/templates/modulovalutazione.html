@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<style type="text/css">
+
+    table{
+        padding-top: 10px;
+        border-right: 1.5px solid black;
+        border-left: 1.5px solid black;
+
+    }
+    .intestazione {
+        padding-top: 10px;
+        border-right: 0.5px solid black;
+        border-left: 0.5px solid black;
+    }
+ 
+    .vuota {
+        background-color: grey;
+    }
+    .vuota2{
+        border-top: 0px;
+        border-bottom: 0px;
+        border-left:0px;
+        border-right:0px;
+    }
+    td{
+        margin-left: 5px;
+        border: 0.5px solid black;
+    }
+    th{
+        border: 0.5px solid black;
+    }
+
+    .interno {
+        border-top: 0.3px solid black;
+        border-bottom: 0.3px solid black;
+    }
+    
+    .center2 {
+    margin: auto;
+    width: 5%;
+    }
+    @page {
+        size: a4 portrait;
+
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 50pt; height: 100pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 140pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+}
+    
+ 
+</style>
+<html>
+    
+    <div id = "header_content">
+        <table style= '-pdf-keep-in-frame-mode: shrink;'> 
+            <tr>
+                <td rowspan="2" style="width:200px; height:200px;  padding-top:-20px; padding-bottom: -20px;"><img  src="{{imagepath}}" size=100></td>
+                <td style="font-size: 10px; width: 450px;"><center><b>MODULO</b></center></td>
+                <td style="font-size: 10px; width:110px; height:30px"><center><b>MD74200AZ.001</b></center></td>
+            </tr>
+            <tr>
+                <td style="font-size: 13px; font-weight: bold; width: 450px;"><center>VALUTAZIONE PER ACQUISIZIONE APPARECCHIATURE/SISTEMI BIOMEDICALI</center></td>
+                <td style="font-size: 10px;"> </td>
+            </tr>
+        </table>
+        <p style="text-align: right; padding-top: -40px; padding-right:20px">PAG. <pdf:pagenumber/> / <pdf:pagecount> </p>
+    </div>
+
+        <table>
+            <tr style="border-top: 1.5px solid black; text-align:center">
+                <td style="font-size: 13px; font-weight: bold;" width="40px">1</td>
+                <td style="font-size: 13px; font-weight: bold;">TIPO DI APPARECCHIATURA O SISTEMA:</td>
+            </tr>
+            <tr>
+                <td colspan="2">{{att.Apparecchiatura}}</td>
+            </tr>
+        </table>
+        <table>
+            <tr><td style="font-size: 13px; font-weight: bold; text-align:center"width="40px">2</td>
+                <td style="font-size: 13px; font-weight: bold; text-align:center">MOTIVO PER CUI E' RICHIESTA L'ATTREZZATURA</td>
+            </tr>
+        </table>
+        <table> 
+            <tr>
+                <td style="font-weight: bold;"  rowspan="3" width="120px">RIFERIMENTO:</td>
+                <td style="text-align:center" width="40px">2.1</td>
+                {% if att.Mot1_1 %} 
+                <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px; "> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px; "> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td>SOSTITUZIONE DI ANALOGA DISMESSA (IN FASE DI DISMISSIONE)</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">2.2</td>
+                {% if att.Mot1_2 %} 
+                <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px; "> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px; "> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td>IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA</td>
+            </tr>
+            <tr>
+                <td style=" text-align:center">2.3</td>
+                {% if att.Mot1_3 %} 
+                <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px; "> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px;"> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td>INIZIO NUOVA ATTIVITA'</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="font-size: 13px; font-weight: bold; text-align:center" width="40px">3</td>
+                <td style="font-size: 13px; font-weight: bold; text-align:center" colspan="2">VALUTAZIONE SUI MOTIVI ESPRESSI PER LA RICHIESTA e/o L'IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">3.1</td>
+                {% if att.ValMot == '1' %} 
+                <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px; "> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px; "> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="font-weight: bold;">CONGRUI</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">3.2</td>
+                {% if att.ValMot == '0' %} 
+                <td width= "30px" style="border-right:0px; padding-left: -6.5px; padding-bottom: 4px; "> <img width= 40px height= 30px src="{{checkpath}}"></td>
+                {% else %} <td width= "30px" style="border-right:0px; padding-bottom: 4px; "> <img  width= 40px height= 30px src="{{uncheckpath}}">{% endif %} </td>
+                <td style="font-weight: bold;">NON CONGRUI</td>
+            </tr>
+        </table>
+        <table>
+            <tr><td style="text-align: right; font-size: 8px; font-weight: bold;" width="70px">3.2.1</td>
+                <td style="font-size:8px; font-weight: bold;">DESCRIVERE MOTIVI DI NON CONGRUITA'</td>
+            </tr>  
+            <tr style="border-bottom: 1.5px solid black">
+                <td colspan="2">{{att.ValMotNota}}</td>
+            </tr>
+        </table>
+        <div>
+            <pdf:nextpage /> 
+        </div>
+        <table>
+            <tr style="border-top: 1.5px solid black">
+                <td style="text-align:center; font-size: 13px; font-weight: bold; text-align:center" width="20px">4</td>
+                <td style="text-align:center; font-size: 13px; font-weight: bold;" colspan="2">VALUTAZIONE SULLE SPECIFICHE/CARATTERISTICHE TECNICHE E DELLE CORRELATE MOTIVAZIONI/ESIGENZE CLINICHE</td>
+            </tr>
+            <tr>
+                <td style="text-align:center; font-size: 9px; color: gray;"colspan="3">OK (congruo), NO(non congruo) + specificare motivo, NC (non di competenza)</td>
+            </tr>
+            <tr>
+                <th width="20px" style="background-color:lightgrey; text-align:center" >rif.to</th>
+                <th>VALUTAZIONE CLINICA<br>(competenza Direzione Aricolazione Aziendale)</th>
+                <th>VALUTAZIONE TECNICA<br>(competenza UIC)</th>
+            </tr>
+            {% for spec in specs %} <!-- si potrebbe aggiungere un counter: se non ci sono specifiche, visualizzare due righe vuote-->
+            <tr>
+                <td style="background-color:lightgrey; text-align:center">{{spec.rif}}</td>
+                <td>{{spec.ValSpecCli}} &#124; {{spec.ValSpecCliNota}}</td> 
+                <td>{{spec.ValSpecTec}} &#124; {{spec.ValSpecTecNota}}</td>
+            </tr>
+            {% endfor %}
+       
+            <tr style="border-bottom: 1.5px solid black">
+                <td style="background-color:lightgrey;" width="40px"></td>
+                <td></td> 
+                <td></td>
+            </tr>
+        
+        </table>
+        <br>
+        <table>
+            <tr style="border-top: 1.5px solid black">
+                <td style="text-align:center; font-size: 13px; font-weight: bold;text-align:center" width="40px"> 4.2</td>
+                <td style="text-align:center; font-size: 13px; font-weight: bold;" colspan="2">UNICITA' DELLE CARATTERISTICHE</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="color:grey; font-size:9px;"> (&dArr;) riportare sotto i numeri di riferimento corrispondenti alle caratteristiche</td>
+            </tr>
+            <tr>
+                <th style="background-color:lightgrey; text-align:center">rif.to</th>
+                <th>VALUTAZIONE CLINICA</th>
+                <th>VALUTAZIONE TECNICA</th>
+            </tr>
+            {% for un in uns %}
+            <tr>
+                <td style="background-color:lightgrey;" width="40px">{{un.rifext.rif}}</td>
+                <td>{{un.ValCli}}</td>
+                <td>{{un.ValTec}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="border-bottom: 1.5px solid black;">
+                <td width="40px"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <br>
+        <table style="border-top: 1.5px solid black;">
+            <tr>
+                <td width="37px" style="font-size: 13px; font-weight: bold; text-align:center; ">5</td>
+                <td style="font-size: 13px; text-align:center; font-weight: bold;">DATI DEL DOCUMENTO</td>
+            </tr>
+        </table>
+        
+            <table>
+            <tr>
+                <td style="font-weight: bold;">RESPONSABILE ARTICOLAZIONE AZIENDALE </td>
+                <td width="200px"> Data <br> {{att.Data2.date}}</td>
+            </tr>
+            <tr>
+                <td>COMPILATORE: NOME COGNOME</td>
+                <td>FIRMA</td>
+            </tr>
+            <tr>
+                <td>{{att.ValUtente}}</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;"> UIC </td>
+                <td>Data <br> {{att.Data2.date}}</td>
+            </tr>
+            <tr>
+                <td>COMPILATORE: NOME COGNOME</td>
+                <td>FIRMA</td>
+            </tr>
+            <tr>
+                <td>{{inclinico}}</td>
+                <td> </td>
+            </tr>
+            <tr style="border-bottom: 1.5px solid black;">
+                <td colspan=2 class="vuota" style="text-align: right;"> fine documento </td>
+            </tr>
+        </table>

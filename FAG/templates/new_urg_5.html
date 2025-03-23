@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<a href="{% url 'new_urg_4e3' att.id %}" class="btn btn-warning">Indietro</a> 
+<a href="{% url 'new_urg_5e2' att.id %}" class="btn btn-primary">Avanti</a>
+
+
+<center>
+    <h2> <b>5 CONSUMABILI PARTICOLARMENTE ONEROSI </b></h2>
+    <h3>{{att.Apparecchiatura}}</h3>
+</center>
+
+<div style="position:relative; left:10px;"> 
+    <table>
+    <form action ="" method="POST">
+      <b>se l'attrezzatura richiesta necessita di consumabili particolarmente onerosi compilare la seguente sezione</b> <br>
+      ("particolarmente onerosi": quando il costo medio annuo del consumabile raggiunge o supera il 12,5% del valore di acquisto presunto dell'attrezzatura)
+      <br>
+        {% csrf_token %}
+        {{ form.ID_rich.as_hidden }}
+        TIPO: {{ form.Tipo }} <br>
+        COSTO UNITARIO(€): {{ form.CostoUnitario }} <br>
+        CONSUMO MEDIO riferito al periodo (unità): {{ form.ConsumoMedio }} <br>
+        PERIODO di utilizzo (anni): {{form.Periodo}}<br>
+    
+        <br>
+        <button type="submit" name="Aggiungi" class="btn btn-primary">Aggiungi Consumabile</button>
+    </form>
+    </table>
+    </div>
+    <br>
+    
+    <div class="center2" style="position:relative; top:100px">
+        <table class="table table-secondary table-striped">
+            <tbody>
+                <tr>
+                    <th>Tipo di consumabile</th>
+                    <th>Costo Unitario (Euro)</th>
+                    <th>Consumo Medio (Unità)</th>
+                    <th>Periodo di utilizzo (anni)</th>
+                    <th>Totale (Euro)</th>
+                    <th>Elimina</th>
+                </tr>
+                {% for consumabile in cons %}
+                <tr>
+                <td>{{consumabile.Tipo}}</td>
+                <td>{{consumabile.CostoUnitario}}</td>
+                <td>{{consumabile.ConsumoMedio}}</td>
+                <td>{{consumabile.Periodo}}</td>
+                <td>{{consumabile.Totale}}</td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'deleteconsuurg' consumabile.id %}">Rimuovi</a></td>  
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+  </div>
+
+
+{% endif %}
+{% endblock %}

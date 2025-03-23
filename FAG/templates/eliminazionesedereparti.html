@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<p> Sei sicuro di voler eliminare {{sede}}?</p>
+
+<form method = "POST">
+    {% csrf_token %}
+    <a href="{% url 'sedereparti' %}">Cancella</a>
+    <input type="submit" name="Conferma">
+
+</form>
+
+{% endif %}
+{% endblock %}

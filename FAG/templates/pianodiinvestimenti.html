@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %} 
+{% load l10n %}
+{% block content %} 
+     {% if user.is_authenticated %}
+
+    <h1> Piano di Investimenti </h1>
+    <hr>
+{% if request.user.Gruppo.PIIns %}
+   <h3>Aggiungi un investimento:</h3>
+   <table>
+       <form method="POST">
+           {% csrf_token %}
+           {{formpi.as_p}}
+           <input type="submit" name="Nuovo">
+           
+       </form>
+   </table>
+<br>
+<hr>
+{% endif %}
+
+<div>
+{% if request.user.Gruppo.ExSi %}
+    <a class="btn btn-primary" href="{% url 'export-csvpiano' %}?{{request.GET.urlencode}}">Export CSV</a>
+    <a class="btn btn-primary" href="{% url 'export-excelpiano' %}?{{request.GET.urlencode}}">Export EXCEL</a>
+{% endif %}
+    <p style=" text-align:right; font-weight: bold; color:brown">TOTALE INVESTIMENTI (FILTRO ATTIVO)= {{tot}} €</p>
+</div>
+</p>
+
+<div style="max-height: 700px; overflow: auto;">
+     <table class="table table-striped" style="background-color:rgb(136, 163, 254)" >
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>ID <br>{{tabFilter.form.ID_PianoInvestimenti}}</th>
+                    <th>Descrizione <br> {{tabFilter.form.Descrizione}}</th>
+                    <th>Priorità <br> {{tabFilter.form.Priorita}}</th>
+                    <th>Costo Presunto (IVA incl.)<br> {{tabFilter.form.Costo_Presunto_IVA}}</th>
+                    <th>Speso<br> {{tabFilter.form.Speso}}</th>
+                    <th>Stato<br> {{tabFilter.form.Stato}}</th>
+                    <th colspan="2"> <button class="btn btn-info" type="submit">&#x1F50D;</button></th>
+                </form>
+                </tr>
+            </thead>
+            <form method="POST">
+                {% csrf_token %}
+                {{formset.management_form}}
+                {% for att,form,sereps,prs,ids,costi,gara in insieme %}
+        
+                    <tr>
+                    <td style="font-weight: bold;">{{form.id}}{% if not att.Stato == 'Inserito Nel Piano' %} {{form.ID_PianoInvestimenti.as_hidden}} {{att.ID_PianoInvestimenti }} {% else %} {{form.ID_PianoInvestimenti}} {% endif %}</td>
+                    <td>{{att.Descrizione}}<br> <p  style="font-size: 11px "> {% if att.is_ext %}  <b>GARE ASSOCIATE</b> <ol style="font-size: 11px "> {% for id in ids %} <li>{{id}}</li> {% endfor %}</ol> {% else %} <b>FABBISOGNI:</b> {% if att.Stato == 'Inserito Nel Piano' %} {{form.FabbRel}} {% else %}  <ul style="font-size: 11px "> {% for serep in sereps %} <li>{{serep | linebreaksbr }}</li> {% endfor %}</ul>{% endif %} {% endif %}</p></td>
+                    <td>{% if not att.Stato == 'Inserito Nel Piano' %}{{form.Priorita.as_hidden}} {{att.Priorita }} {% else %} {{form.Priorita}} {% endif %}<br>  <p  style="font-size: 11px "> <b>PRIORITA DELLE RICHIESTE:</b> <ul style="font-size: 11px ">{% for pr in prs %} <li>{{pr}}</li> {% endfor %}</ul></p></td>
+                    <td>{{att.Costo_Presunto_IVA | intcomma}} <br> <p style="font-size: 11px">{% if att.is_ext %} <b>COSTI PRESUNTI GARE ASSOCIATE</b> <ol style="font-size: 11px "> {% for costo in costi %} <li>{{costo}}</li> {% endfor %}</ol>{% endif %}</p></td>
+                    <td>{% if att.is_end %} {{form.Speso.as_hidden}} {{att.Speso}} {% else %} {{form.Speso}} {% endif %}</td> 
+                    <td> {% if not att.is_ext %} {{att.Stato}} <br>  {% if not att.Stato == 'Inserito Nel Piano' %} <p style="font-size:12px">RIFERIMENTO: {{gara | linebreaksbr}} </p> {% endif %} {% else %} <ol style="font-size:11px"> {% for g in gara %} <li>{{g | linebreaksbr }} </li>{% endfor %} </ol>{% endif %}</td></td> 
+                    <td> {% if not att.is_ext %} <a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2 %}">&#128214;</a> {% else %} <a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var3 %}">&#128214;</a>{% endif %}</td> 
+                    
+
+                    <td>{% if not att.is_ext %} {% if not att.Stato == 'Inserito Nel Piano' %} {% else %} <a class="btn btn-sm btn-info" href="{% url 'avvio_richiesta' att.id%}">Avvia investimento</a> <br> <br> <a class="btn btn-sm btn-info" href="{% url 'rimuoviPI' att.id%}">Rimuovi Investimento</a>{% endif %}{% endif %}
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan ="12" ><input type="submit" name="Modifica"></td>
+                </tr>
+            </form>
+            </tbody>
+        </table>
+            </div>
+    {% endif %}
+</p>
+{% endblock %}

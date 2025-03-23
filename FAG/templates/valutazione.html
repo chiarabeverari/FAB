@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<a href="{% url 'home' altro %}">Torna Indietro</a>
+<center>
+<h1> <b>VALUTAZIONE PER ACQUISIZIONE APPARECCHIATURE/SISTEMI BIOMEDICALI</b></h1>
+</center>
+<div>
+<h4><b>1 | TIPO DI APPARECCHIATURA O SISTEMA: </b> </h4>
+{{att.Apparecchiatura}}
+</div>
+<div>
+<br>
+<hr>
+<h4><b>2 | MOTIVO PER CUI E' RICHIESTA L'ATTREZZATURA: </b> </h4>
+<ul>
+    {% if att.Mot1_1 %}
+    <li> Sostituzione di analoga dismessa o in dismissione: {{att.SostNota}} </li>
+    {% endif %}
+    {% if  att.Mot1_2 %} 
+    <li> Implementazione/Aggiornamento di Attrezzatura/Sistema </li>
+    {% endif %}
+    {% if att.Mot1_3 %}
+    <li> Inizio nuova attività </li> 
+    {% endif %}
+</ul>
+</div>
+<hr>
+<div>
+<h4><b>3 | VALUTAZIONE SUI MOTIVI ESPRESSI PER LA RICHIESTA E/O L'IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA: </b> </h4>
+</div>
+{% if not b == 'UIC' %} 
+<div>
+<form action ="" method="POST">
+    <table>
+        <tr>
+            <td>{% csrf_token %}
+            {{ form.as_p }} <br>
+            <input type="submit" name="Motivi"></td>
+        </tr>
+    </table>
+</form>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div>
+{% else %} 
+<b>Valutazione dei motivi: </b> {% if att.ValMot is not None %} {{att.ValMot}} {% else %} Non ancora eseguita {% endif %}<br>
+<b>Nota: </b> {{att.ValMotNota}} <br> 
+<b>Utente Valutazione: </b> {% if att.ValMot is not None %} {{att.ValUtente}} {% else %} Non ancora eseguita {% endif %}<br>
+<b>Data Valutazione: </b> {% if att.ValMot is not None %} {{att.ValData}} {% else %} Non ancora eseguita {% endif %}<br>
+{% endif %}
+<hr>
+</div>
+<br>
+<div> 
+{% if c > 1 %}           
+<h4><b>4 | VALUTAZIONE SULLE SPECIFICHE/CARATTERISTICHE TECNICHE E DELLE CORRELATE MOTIVAZIONI/ESIGENZE CLINICHE </b> </h4>
+<h5 style="color:gray">OK (congruo), NO (non congruo. Specificare la motivazione), NC (non di competenza) </h5>
+  
+</div>
+<div>
+
+    <table class="table table-success table-striped">
+        <form method="POST">
+            {% csrf_token %}
+        {{formsetsp.management_form}}
+        <tbody>
+            <thead>
+            <tr>
+                <th>Rif.</th>
+                <th>Specifica</th>
+                <th>Motivo Clinico</th>
+                <th>m/M</th>
+                <th>Valutazione Clinica</th>
+                <th>Data ed Utente Val. CLinica</th>
+                <th>Valutazione Tecnica</th>
+                <th>Data ed Utente Val. Tecnica</th>
+
+            </tr>
+            </thead>
+            {% for spec,form in insiemesp %}
+            <tr>
+                
+                    <td>{{spec.rif}}</td>
+                    <td>{{spec.Specifica}}</td>
+                    <td>{{spec.MotivoClinico}}</td>
+                    <td>{% if spec.Min %}m{% else %} M {% endif %}</td>
+                    <td>{% if not b == 'ALL' %}
+                        {% if b == 'UIC' %}
+                        <b>Utente: </b>
+                            {{spec.ValCliUtente}} 
+                            <hr>{% endif %}
+                        {% if b == 'UIC' %} 
+                            {{spec.ValSpecCli}}: {{spec.ValSpecCliNota}} 
+                        {% else %} 
+                            {{form.ValSpecCli}} {{form.ValSpecCliNota}} <b style="color:red">{{form.ValSpecCliNota.errors}}</b>
+                        {% endif %}
+                        {% else %} 
+                        {{form.ValSpecCli}} {{form.ValSpecCliNota}} <b style="color:red">{{form.ValSpecCliNota.errors}}</b>
+                        {% endif %} {{form.id}}</td>
+                    <td>{% if spec.ValCliUtente is not None %} 
+                        Eseguita da {{spec.ValCliUtente}} in data {{spec.ValCliData}}
+                        {% else %} 
+                            Non Eseguita
+                        {% endif %}</td>
+                    <td><b> {% if not b == 'ALL' %}
+                        {% if not b == 'DAA' %} 
+                        Utente: </b>
+                        {{spec.ValTecUtente}}
+                        <hr> {% endif %}
+                        {% if b == 'UIC' %}
+                        {{form.ValSpecTec}} {{form.ValSpecTecNota}} <b style="color:red">{{form.ValSpecTecNota.errors}}</b>
+                        {% else %}
+                        {{spec.ValSpecTec}}: {{spec.ValSpecTecNota}}
+                        {% endif %}
+                        {% else %} 
+                        {{form.ValSpecTec}} {{form.ValSpecTecNota}} <b style="color:red">{{form.ValSpecTecNota.errors}}</b>
+                        {% endif %}</td>
+                    <td>{% if spec.ValSpecTec is not None %} 
+                            Eseguita da {{spec.ValTecUtente}} in data {{spec.ValTecData}}
+                        {% else %} 
+                            Non eseguita
+                        {% endif %}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="8" style="text-align:right">   <input type="submit" name="Specifiche"></td>
+                </tr>
+        </tbody>
+    </form>
+    </table>
+ 
+
+
+</div>
+
+
+
+
+
+{% endif %}
+{% if c > 2 %}
+
+<hr>
+
+<h4><b>4.2 | UNICITA' DELLE CARATTERISTICHE </b> </h4>
+
+
+<div>
+    
+    <table class="table table-secondary">
+        <form method="POST">
+            {% csrf_token %}
+            {{formsetun.management_form}}
+        <tbody>
+            <thead>            <tr>
+                <th>Rif.</th>
+                <th>Nota</th>
+                <th>Valutazione Clinica</th>
+                <th>Data ed Utente Val. Clinica</th>
+                <th>Valutazione Tecnica</th>
+                <th>Data ed Utente Val. Clinica</th>
+            </tr>
+            </thead>    
+            {% for un,formun in insiemeun %}
+            <tr>
+                
+                    <td>{{un.rifext}}</td>
+                    <td>{{un.Nota}}</td>
+                    <td>{% if not b == 'ALL' %} 
+                        {% if b == 'UIC' %}<b>Utente: </b>  {{un.ValCliUtente}} <hr>{% endif %} 
+                       {% if b == 'UIC' %} {{un.ValCli}} {% else %} {{formun.ValCli}} {% endif %}
+                    {% else %} 
+                    {{formun.ValCli}}
+                    {% endif %}{{formun.id}}</td>
+                    <td>{% if un.ValCli is not None %} 
+                            Eseguita da {{un.ValCliUtente}} in data {{un.ValCliData}}
+                        {% else %}
+                            Non eseguita 
+                        {% endif %}</td>
+                    <td>{% if not b == 'ALL' %} 
+                        {% if not b == 'UIC' %}<b>Utente: </b> {{un.ValTecUtente}} <hr>{% endif %}
+                        {% if b == 'UIC' %} {{formun.ValTec}} {% else %} {{un.ValTec}} {% endif %}
+                        {% else %} 
+                        {{formun.ValTec}}
+                        {% endif %}</td>
+                    <td>{% if un.ValTec is not None %} 
+                            Eseguita da {{un.ValTecUtente}} in data {{un.ValTecData}}
+                        {% else %} 
+                            Non eseguita
+                        {% endif %}</td>
+                
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="6" style="text-align:right"> <input type="submit" name="Unicita"></td>
+            </tr>
+        </tbody>
+       
+    </form>
+    </table>
+
+</div>
+  
+<br>
+
+</p>
+{% endif %}
+{% endif %}
+{% endblock %}

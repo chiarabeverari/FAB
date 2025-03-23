@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<center><h2> COPIA DA UN FABBISOGNO ESISTENTE </h2>
+</center>
+
+<div> 
+<table>
+<form action ="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" name="Aggiungi">
+</form>
+</table>
+</div>
+<br>
+<h4>Fabbisogni esistenti</h4>
+
+<div style="max-height: 500px; overflow: auto; ">
+<table class="table table-striped" style="background-color:rgb(213, 221, 248) ">
+<form method="GET">
+    <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+        <tr>
+            <th>Progressivo <br> {{tabFilter.form.Progressivo}}</th>
+            <th>Sede <br> {{tabFilter.form.Sede}}</th>
+            <th>Apparecchiatura<br> {{tabFilter.form.Apparecchiatura}}</th>
+            <th>Q.tà<br> {{tabFilter.form.Qta}}</th>
+            <th>Priorità <br> {{tabFilter.form.Priorita}}</th>
+            <th>Costo Presunto (CON IVA)<br> {{tabFilter.form.Costo_Presaunto_IVA}} </th>
+            <th><button class="btn btn-sm btn-info" type="submit">&#8981;</button> </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for fabb in fabbs %} 
+        <tr>
+            <td> {{fabb.Progressivo}} </td>
+            <td> {{fabb.Sede_Reparto}} </td>
+            <td> {{fabb.Apparecchiatura}} </td>
+            <td> {{fabb.Qta}} </td>
+            <td> {{fabb.Priorita}} </td>
+            <td colspan="2"> {{fabb.Costo_Presunto_IVA}} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</form>
+</table>
+</div>
+<br>
+<h4>Investimenti non previsti</h4>
+<table class="table table-striped" style="background-color:rgb(213, 221, 248); table-layout:fixed;">
+    <thead style=" background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+        <tr>
+            <th>ID_PianoInvestimenti</th>
+            <th>Descrizione</th>
+            <th>Priorità</th>
+            <th>Costo Presunto (CON IVA)</th>
+            <th>Speso</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pi in pis %} 
+        <tr>
+            <td>{{pi.ID_PianoInvestimenti}}</td>
+            <td>{{pi.Descrizione}}</td>
+            <td>{{pi.Priorita}}</td>
+            <td>{{pi.Costo_Presunto_IVA}}</td>
+            <td>{{pi.Speso}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

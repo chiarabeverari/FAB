@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<table>
+    <form method="POST" enctype ="multipart/form-data">
+    {% csrf_token %}
+    {{form.ID_rich.as_hidden}}
+    Nome Documento: {{form.Nome}} <br><br>
+    N pagine: {{form.N_pagine}}<br><br>
+    File: {{form.File}}<br><br>
+    Descrizione: {{form.Descrizione}}
+    <input type="submit">
+    </form>
+</table>
+
+<br>
+<h4>Documenti già presenti</h4>
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in objects %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id stato %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

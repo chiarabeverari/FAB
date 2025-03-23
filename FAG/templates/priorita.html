@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<center>{% if var == '1' %} <h2> PRIORITA' </h2> {% elif var == '2' %} <h2> GRUPPI </h2> {% elif var == '3' %} <h2> PROFILI PROFESSIONALI</h2> {% endif %}
+</center>
+
+{% if k == 1 %}
+{% if request.user.Gruppo.PrIns %}
+
+    <div class="card h-100" style=" width: 88rem; background-color:transparent; border: 1.5px solid green">
+      <div class="card-body">
+        <h5 class="card-title">Aggiungi nuovo elemento.</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Aggiungi un nuovo elemento compilando il form sottostante.</h6>
+        <table>
+            <form method="POST">
+                <table>
+                {% csrf_token %}
+                {{ form.as_table }}
+            </table>
+                <input type="submit" name="Aggiungi">
+            </form>
+        </table>
+      </div>
+    </div>
+
+
+<br>
+{% endif %}
+<div style="max-height: 700px; overflow: auto; ">
+    <table class="table table-striped">
+        <thead  style="position: sticky;  top: 0; z-index: 0;">
+            {% if var == '1' %}
+            <tr style="background-color: rgb(89, 159, 89); color:rgb(252, 252, 252); ">
+                <th>Numero</th>
+                <th>Descrizione</th>
+                <th>Modifica</th>
+                <th>Rimuovi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prs %}
+            <tr style="background-color:rgb(148, 213, 148)">
+            <td>{{p.Numero}}</td>
+            <td>{{p.Descrizione}}</td>  
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificapriorita' p.id var %}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'deletepriorita' p.id var %}">Rimuovi</a></td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+        {% elif var == '2' %}
+            <tr style="background-color: rgb(89, 159, 89); color:rgb(252, 252, 252); ">
+                <th>Numero</th>
+                <th>Descrizione</th>
+                <th>Vedi i dettagli e Modifica</th>
+                <th>Rimuovi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prs %}
+            <tr style="background-color:rgb(148, 213, 148)">
+            <td>{{p.Numero}}</td>
+            <td>{{p.Descrizione}}</td>  
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificapriorita' p.id var %}">Dettagli / Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'deletepriorita' p.id var %}">Rimuovi</a></td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    {% elif var == '3' %}
+            <tr style="background-color: rgb(89, 159, 89); color:rgb(252, 252, 252); ">
+                <th>Descrizione</th>
+                <th>Modifica</th>
+                <th>Rimuovi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in prs %}
+            <tr style="background-color:rgb(148, 213, 148)">
+            <td>{{p.Nome}}</td>  
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificapriorita' p.id var %}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'deletepriorita' p.id var %}">Rimuovi</a></td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    {% endif %}
+    </table>
+</div>
+{% else %} 
+<div>
+    <table class="table table-striped table-success">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_table}}
+           <tr><td colspan="2"><input type="submit"></td></tr> 
+        
+        </form>
+    </table>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

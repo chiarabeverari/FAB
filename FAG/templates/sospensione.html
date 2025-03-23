@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<h4>Inserisci il motivo dell'annullamento</h4>
+
+<form method = "POST">
+    {% csrf_token %}
+    {{form.MotivoAnnullamento}}
+    <input type="submit" name="Conferma">
+
+</form>
+
+{% endif %}
+{% endblock %}

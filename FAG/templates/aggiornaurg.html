@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<a href="{% url 'raccoltafabbisogni' %}" class="btn btn-sm btn-primary">Raccolta Fabbisogni</a> <br> <br>
+<a href = "{% url 'new_urg_2_4' pk %}" class="btn btn-sm btn-info">&rarr;</a>
+
+<h1> Nuova richiesta </h1>
+<br>
+<div style="position: absolute; left:10px">
+    <form action ="" method="POST">
+        {% csrf_token %}
+        {{form.Stato.as_hidden}}
+        
+        <h4><b>0. ANNO PREVISTO</b></h4>
+        ANNO PRESUNTO DI ACQUISTO: {{form.Anno_Previsto}}
+        <hr>
+        <h4><b>1. TIPO DI APPARECCHIATURA O SISTEMA (BREVE DESCRIZIONE)</b></h4>
+        <br>
+        SEDE E REPARTO: {{form.Sede_Reparto}}
+        <br>
+        <br>
+        QUANTITA': {{form.Qta}}
+        <br>
+        <br>
+        APPARECCHIATURA: {{form.Apparecchiatura}}
+        <br>
+        FONTE DI FINANZIAMENTO: {% if opt == '2' %} P.I. {{form.ID_PianoInvestimenti}} {% else %} {{form.Fonte }}{{form.ID_PianoInvestimenti.as_hidden}}{% endif %}
+        <br>
+        <b>Necessità di modifiche/implementazioni infrastrutturali/strutturali?</b> <br>
+        {{form.NecInfraNO}} <b>NO</b> <b style="color : red;">{{form.NecInfraNO.errors}}</b><br>
+        {{form.NecInfraSi}} <b>SI, in particolare: </b>
+        {{form.NecInfraNota}} <b style="color : red;">{{form.NecInfraNota.errors}}</b>
+        <br>
+        <hr style="color: black;">
+        <h4><b>2. MOTIVO PER CUI E' RICHIESTA L'ATTREZZATURA</b></h4>
+        <br>
+        {{form.Mot1_1}} SOSTITUZIONE di analoga dismessa o in dismissione: ( inv. {{form.SostNota}}) <b style="color: red;">{{form.SostNota.errors}}</b>
+        <br>
+        {{form.Mot1_2}} IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA
+        <br>
+        {{form.Mot1_3}} INIZIO NUOVA ATTIVITA' (PER ATTIVITA' MAI ESEGUITE PRIMA)
+        <br>
+        <br>
+        <hr style="color: black;">
+        <h4><b>3. DESCRIVERE I MOTIVI PER CUI SI RICHIEDE L'IMPLEMENTAZIONE/AGGIORNAMENTO DI ATTREZZATURA/SISTEMA </b></h4>
+        <br>
+        {{form.Mot2_1}} MANTENIMENTO/RECUPERO DELLE PRESTAZIONI E/O DELLA SICUREZZA
+        <br>
+        {{form.Mot2_2}} AUMENTO/MIGLIORAMENTO DELLE PRESTAZIONI 
+        <br>
+        <br>
+        DESCRIVERE IN COSA CONSISTE L'AUMENTO DELLE PRESTAZIONI: <br>{{form.AggNota}} <b style="color : red;">{{form.AggNota.errors}}</b><br>
+        <hr style="color: black;">
+        <br>
+        DESCRIZIONE DI MASSIMA DELLE CARATTERISTICHE TECNICHE DELL'ATTREZZATURA ED ELENCO DEGLI EVENTUALI ACCESSORI (SI SUGGERISCE DI ALLEGARE EVENTUALMENTE LA SCHEDA TECNICA AL MOMENTO DELLA COMPILAZONE DELLE SPECIFICHE.)
+        <br>
+        {{form.DescrMass}}
+        <br>
+        <hr>
+        <h4><b>5.1 ACQUISTO o SERVICE o NOLEGGIO </b></h4>
+        <b>Indicare se l'attrezzatura può essere acquistata o richiesta in service.</b>
+        <br>
+        {{ form.Acquisto }} ACQUISTO <br>
+        &nbsp;&nbsp; PREZZO TOTALE PRESUNTO IVA ESCLUSA (ACQUISTO): {{ form.Prezzo_acquisto }} <b style="color : red;">{{form.Prezzo_acquisto.errors}}</b><br>
+        <hr>
+        {{ form.Noleggio }} NOLEGGIO <br>
+        &nbsp;&nbsp; PREZZO ANNUO TOTALE PRESUNTO IVA ESCLUSA (NOLEGGIO): {{ form.Prezzo_Noleggio }}<b style="color : red;">{{form.Prezzo_Noleggio.errors}}</b><br>
+        <br>
+        <hr>
+        {{ form.Service }} SERVICE <br>
+        &nbsp;&nbsp; PREZZO ANNUO TOTALE PRESUNTO IVA ESCLUSA (SERVICE): {{ form.Prezzo_Service }} <b style="color : red;">{{form.Prezzo_Service.errors}}</b><br>
+        <br>
+        per mesi: {{ form.NolMesi }}
+        <br>
+        <br>
+        INDICA LA % DI IVA DA APPLICARE: {{form.PercIVA}} <br>
+        <br>
+        <i>&nbsp;&nbsp;&nbsp;&nbsp;Motivo per cui l'attrezzatura è richiesta in service o noleggio</i> <b>(Anche più opzioni; specificare nel campo NOTA) </b> <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ form.Tecnologico }} TECNOLOGICO <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ form.Valutativo }} VALUTATIVO <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ form.Temporaneo }} TEMPORANEO <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ form.Economico }} ECONOMICO <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ form.Gestionale }} GESTIONALE <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;NOTA: {{ form.NotaNoleggio }}
+
+        <hr>
+        <h4><b>7  DATI DEL DOCUMENTO </b></h4>
+        <br>
+        COMPILATORE: {{form.Compilatore}}
+        <br>
+        Data di compilazione: {{form.Data}}
+        <br>
+    </form>
+</div>
+{%endif%}
+{% endblock %}

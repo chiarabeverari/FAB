@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+{% if urgent_req and urgent_req.id %}
+  <a href="{% url 'new_urgente' %}" class="btn btn-warning">Indietro</a>
+{% else %}
+  <a href="javascript:history.back()" class="btn btn-warning">Indietro</a>
+{% endif %}
+<a href="{% url 'new_urg_4e2' pk=pk %}" class="btn btn-primary">Avanti</a>
+<br> <br>
+
+<center><h3><b> 4. DESCRIZIONE DELLE SPECIFICHE/CARATTERISTICHE TECNICHE E DELLE CORRELATE MOTIVAZIONI/ESIGENZE CLINICHE </b></h3>
+    <br>
+    <h3>APPARECCHIATURA : {{ urgent_req.Apparecchiatura }}</h3>
+</center>
+
+    <br>
+    <div> 
+      <table class="table">
+        <form method ='post' enctype ="multipart/form-data">
+            {% csrf_token %}
+            {{ form.ID_rich.as_hidden }}
+            {{ form.rif.as_hidden }}
+            <tr> <td>SPECIFICA: {{ form.Specifica }}
+            <br>
+            <br>
+            MOTIVO CLINICO: {{ form.MotivoClinico }}
+            <br>
+            <br>
+            <table>
+              <tr>
+                <td>Di minima <br> (obbligatoria) </td>
+                <td>{{form.Min}}</td>
+              </tr>
+              <tr>
+                <td>Di massima <br> (preferenziale)</td>
+                <td>{{form.Max}} <b style="color: red;">{{form.Max.errors}}</b></td>
+              </tr>
+            </table>
+            <br>
+          </td>
+          </tr>
+           <tr> 
+            <td>
+              <button type="submit" name="save" class="btn btn-sm btn-primary" onclick="this.form.action.value='save'">Salva specifica</button>
+            </td>
+           </tr>
+        </form>
+      </table>
+    </div>
+    {% if form.errors %}
+    <ul>
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <br>
+    <div class="center"> 
+    <table class="table table-secondary table-striped">
+        <tbody>
+             <thead>
+                <tr>
+                    <th>Rif.</th>
+                    <th>Specifica</th>
+                    <th>MotivoClinico</th>
+                    <th>m/M</th>
+                    <th>Rimuovi</th>
+                </tr>
+              </thead>
+            {% for spec in specs %}
+            <tr>
+                <td>{{spec.rif}}</td>
+                <td>{{spec.Specifica}}</td>
+                <td>{{spec.MotivoClinico}}</td>
+                <td>{% if spec.Min %}m{% else %} M{% endif %}</td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'deletespecificheurg' spec.id %}">Rimuovi</a></td>
+              </tr>
+            {% endfor %}
+        </tbody>
+     </table>
+    </div>
+{% endif %}
+{% endblock %}

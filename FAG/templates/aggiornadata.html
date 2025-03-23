@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<h4>MODIFICA DATE: </h4>
+<form action ="" method="POST">
+    {{ formset.management_form }}
+    {% csrf_token %}
+
+    <table class="table table-striped table-secondary">
+        <tr>
+            <th>Attrezzatura</th>
+            <th>Progressivo</th>
+            <th>Data Avvio Richiesta</th>
+            <th>Data Completamento Richiesta </th>
+            <th>Data di Valutazione</th>
+            <th>Data di Spedizione al Provveditorato</th>
+            <th>Data Avvio Gara</th>
+            <th>Data Valutazione Offerte</th>
+            <th>Data di Aggiudicazione</th>
+            <th>Data di Acquisizione</th>
+            <th>Data Collaudo</th>
+            <th>Data di Sospensione/Annullamento</th>
+
+        </tr>
+
+        {% for att,form in insieme %} 
+        <tr>
+            <td>{{att.Apparecchiatura}}</td>
+            <td>{{att.Progressivo}}</td>
+            <td>{{form.Data}}{{form.id}}</td>
+            <td>{{form.Data1}}</td>
+            <td>{{form.Data2}}</td>
+            <td>{{form.Data3}}</td>
+            <td>{{form.Data4}}</td>
+            <td>{{form.Data5}}</td>
+            <td>{{form.Data6}}</td>
+            <td>{{form.Data7}}</td>
+            <td>{{form.Data8}}</td>
+            <td>{{form.Data9}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <input type="submit" name="Data">
+</form>
+{% endif %}
+{% endblock %}

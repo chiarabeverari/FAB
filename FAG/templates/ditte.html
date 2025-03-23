@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+<center><h2> DITTE </h2>
+</center>
+
+<div> 
+
+{% if k == 1 %}
+{% if request.user.Gruppo.DiIns %}
+<form action ="" method="POST">
+    {% csrf_token %}
+    Nome Ditta: {{form.NomeDitta}}<br>
+    <br>
+    Luogo Ditta: {{form.LuogoDitta}}<br>
+
+    <input type="submit" name="Aggiungi">
+</form>
+</div>
+<br>
+{% endif %}
+
+<div class="center">
+    <table class="table table-striped table-success">
+        <tbody>
+            <tr>
+                <th>Nome</th>
+                <th>Luogo</th>
+                <th>Modifica</th>
+                <th>Rimuovi</th>
+            </tr>
+            {% for ditta in ditte %}
+            <tr>
+            <td>{{ditta.NomeDitta}}</td>
+            <td>{{ditta.LuogoDitta}}</td>  
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificaditte' ditta.id %}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneditte' ditta.id %}">Rimuovi</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+
+<div class="center">
+    <table class="table table-striped table-success">
+        <form method="POST">
+            {% csrf_token %}
+        <tbody>
+            <tr>
+                <th>Nome</th>
+                <th>Luogo</th>
+            </tr>
+            {% for ditta in ditte %}
+            {% if ditta == d %}
+            <tr>
+            <td>{{form.NomeDitta}}</td>
+            <td>{{form.LuogoDitta}}</td>  
+            <td><input type="submit"></td>
+            </tr>
+            {% else %} 
+            <tr>
+                <td>{{ditta.NomeDitta}}</td>
+                <td colspan="2">{{ditta.LuogoDitta}}</td>  
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

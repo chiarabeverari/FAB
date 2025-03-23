@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+
+{% if user.is_authenticated %}
+<div>
+&ensp;&ensp;&ensp; <h2>Profilo di {{user.username}}</h2> 
+</div>
+<div>
+    <table>
+        <tr> <td width="250px"><b>USERNAME:</b></td> <td>{{user.username}}</td> <tr>
+        <tr><td><b>NOME:</b> </td> <td> {{ user.Nome }} </td>
+        <tr><td><b>COGNOME:</b> </td> <td>{{ user.Cognome }} </td>
+        <tr><td><b>E-MAIL: </b> </td>  <td>{{ user.email }}</td>
+        <tr><td><b>GRUPPO DI APPARTENENZA: </b> </td>  <td>{{ user.Gruppo }}</td>
+        <tr><td><b>SEDE E REPARTI ASSOCIATI: </b> </td>  <td>{{ user.Sede_Reparto }}</td>
+        <tr><td><b>PROFILO PROFESSIONALE: </b> </td>  <td>{{ user.Profilo_Professionale }}</td>
+    </table>
+</div>
+<br>
+<p>Vuoi modificare le tue informazioni personali? <a href = "{% url 'modificauser' var %}">Clicca qui</a></p>
+<br>
+<br>
+<hr>
+
+<div class="center3" style="position:relative">
+    <h5>{{ Int }}</h5>
+    <table class="table table-primary table-striped">
+        <tbody>
+            <thead>
+                <tr>
+                    <th>Sede - Reparto - SubReparto</th>
+                    <th>Apparecchiatura Richiesta</th>
+                    <th>Data Richiesta</th>
+                    <th>Stato Richiesta</th>
+                </tr>
+            </thead>
+            {% for at in att %}
+            <tr>
+                <td>{{at.Sede_Reparto}}</td>
+                <td>{{at.Apparecchiatura}}</td>
+                <td>{{at.Data}}</td>
+                <td>{{at.Stato}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+</div>
+<hr>
+<br>
+<center><h5>NOTIFICHE ({{counter}} non lette)</h5> <a href="{% url 'tuttoletto' %}">Segna tutto come letto</a> </center>
+<div style="max-height: 700px; overflow: auto; " class="center3">
+    <table class="table">
+        <tbody>
+            <thead style="position: sticky; background-color: green; color:white; top: 0; z-index: 10;">
+                <tr>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Messaggio</th>
+                    <th>Segna</th>
+                </tr>
+            </thead>
+            {% for not in nots %}
+            {% if not.Letto %}
+                <tr style="background-color: rgb(116, 204, 116);">
+            {% else %}
+                <tr style="font-weight: bold; background-color: rgb(116, 204, 116);">
+            {% endif %}
+                <td>{{not.Data.date}}</td>
+                <td>{{not.Data.time}}</td>
+                <td>{{not.Messaggio}}</td>
+                {% if not.Letto %}
+                <td><a class="btn btn-sm btn-secondary" href="{% url 'non_letto' not.id %}">Segna Come Non Letto</a></td> 
+                {% else %}
+                <td><a class="btn btn-sm btn-secondary" href="{% url 'letto' not.id %}">Segna Come Letto</a></td>
+                 {% endif %}
+                
+            </tr>
+            
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+    <div style="text-align: right"><a href="{% url 'cancellatutto' %}">Cancella tutti i messaggi</a></div>
+</div>
+
+
+<hr>
+
+{% else %}
+NON ti sei autenticato -> <a class="btn btn-primary" href="{% url 'login' %}">Log In</a>   
+<br>
+Non hai un account? Registrati qui:<a class="btn btn-primary"  href="{% url 'signup' %}">Registrati</a> 
+
+{% endif %}
+
+{% endblock %}

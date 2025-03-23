@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+{% if var == '3' %}
+<ul class="nav nav-tabs">
+  <li class="nav-item" style="background-color:rgb(196, 196, 252); ">
+    <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+  </li>
+  <li class="nav-item" style="background-color:powderblue;">
+    <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+  </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_5' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% endif %}
+{% if not b %}
+<div style="position:relative; left:20px;">
+  {% if counter > 0 %}<a class="btn-sm btn-info" href="{% url 'new_4e2' att.id var %}">&#x2190;</a> {% else %} <a class="btn-sm btn-info" href="{% url 'new_2_4' att.id var %}">&#x2190;</a> {% endif %} 
+  <a class="btn-sm btn-info" href="{% url 'new_5' att.id var %}">&#x2192;</a>
+{% endif %}
+</div>
+<center>
+<h2><b>4.3 CRITERIO DI VALUTAZIONE QUALITA'</b> </h2>
+<h3>{{att.Apparecchiatura}}</h3>
+</center>
+
+{% if k == 2 %}
+<table class="table table-secondary table-striped">
+  <form method="POST">
+    {% csrf_token %}
+  <tbody>
+      <tr>
+          <th>Rif.</th>
+          <th>Criterio</th>
+          <th colspan="2">Peso</th>
+      </tr>
+      {% for cr in crs %}
+      {% if c == cr %}
+      <tr>
+      <td>{{cr.Rif}}{{form.Rif.as_hidden}}{{form.ID_rich.as_hidden}}</td>
+      <td>{{form.Criterio}}</td>
+      <td>{{form.Peso}}</td>
+      <td><input type="submit"></td>  
+      </tr>
+      {% else %}
+      <tr>
+        <td>{{cr.Rif}}</td>
+        <td>{{cr.Criterio}}</td>
+        <td colspan="2">{{cr.Peso}}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+</tbody>
+</form>
+</table>
+{% else %}
+
+<div> 
+  <table>
+<form action ="" method="POST">
+    {% csrf_token %}
+    {{ form.ID_rich.as_hidden }}
+    {{ form.Rif.as_hidden }}
+    CRITERIO: {{ form.Criterio }}
+    <br>
+    PESO: {{ form.Peso }}
+
+    <input type="submit" name="Aggiungi">
+</form>
+</table>
+</div>
+<br>
+<br>
+<br>
+{% if b %}
+<h4 style="color:red">ATTENZIONE: La somma dei pesi differisce da 100. Correggere opportunamente. Non sarà possibile mandare in valutazione la richiesta prima di aver corretto.</h4>
+{% endif %}
+<div>
+<div clas="center">
+    <table class="table table-secondary table-striped">
+        <tbody>
+            <tr>
+                <th>Rif.</th>
+                <th>Criterio</th>
+                <th>Peso</th>
+                <th>Modifica</th>
+                <th>Elimina</th>
+            </tr>
+            {% for cr in crs %}
+            <tr>
+            <td>{{cr.Rif}}</td>
+            <td>{{cr.Criterio}}</td>
+            <td>{{cr.Peso}}</td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificacriteri' cr.id var %}">Modifica</a></td>  
+            <td><a class="btn btn-sm btn-info" href="{% url 'deletecriteri' cr.id var %}">Rimuovi dall'elenco</a></td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

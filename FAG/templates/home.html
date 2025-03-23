@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %} 
+     {% if user.is_authenticated %}
+    {% if b %}&nbsp; &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" href="{% url 'aggiornadata' %}">Modifica le date di qualche attrezzatura</a> {% endif %}
+    <br>
+    <br>
+    
+    {% if var3 == 'altro' %}
+    <div class="card" style="width: 38rem; background-color: transparent; border: 3px solid blue;">
+      <div class="card-body">
+        <h3 class="card-title">Richieste per voci sacco</h3>
+        <h6 class="card-subtitle mb-2 text-muted">Inserisci una richiesta da aggiungere ad una voce sacco del piano investimenti.</h6>
+    
+        <a href="{% url 'new' var4 %}" class="btn btn-sm btn-success">Aggiungi Nuova Richiesta</a>
+        <a href="{% url 'copiafabbisogno' %}" class="btn btn-sm btn-warning">Copia da Fabbisogno esistente</a>
+      </div>
+    </div><br><br> {% endif %}
+
+    <h1> {% if var3 == 'Gare' %} Elenco Gare {% elif var3 == 'altro' %} Definisci le specifiche  {% endif %} </h1>
+{% if request.user.Gruppo.ExSi %}
+<div>
+    <a class="btn btn-primary" href="{% url 'export-csv' %}?{{request.GET.urlencode}}">Export CSV</a>
+    <a class="btn btn-primary" href="{% url 'export-excel' %}?{{request.GET.urlencode}}">Export EXCEL</a>
+</div>
+{% endif %}
+</p>
+<div style="max-height: 700px; overflow: auto; ">
+     <table class="table">
+        <tbody>
+            <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure;   top: 0; z-index: 0;">
+                <tr>
+                    <form method="get">
+                    <th>Progressivo<br>{{tabFilter.form.Progressivo}}</th>
+                    <th>Apparecchiatura <br> {{tabFilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà <br> {{tabFilter.form.Qta}} </th>
+                    <th>Sede - Reparto - SubReparto <br> {{tabFilter.form.Sede}}</th>
+                    <th>Stato <br>{{tabFilter.form.Stato}} </th>
+                    <th>Date</th>
+                    <th>Visualizza <br> </th>
+                    <th colspan="2"> <button class="btn btn-info" type="submit">&#x1F50D;</button></th>
+                </form>
+                </tr>
+            </thead>
+                {% for att,sp in insieme %}
+                    {% if att.Stato.Numero == 1 %}
+                        <tr class="Stato1">
+                    {% elif att.Stato.Numero == 2 %}
+                        <tr class="Stato2"> 
+                    {% elif att.Stato.Numero == 3 %}
+                        <tr class="Stato3"> 
+                    {% elif att.Stato.Numero == 4 %}
+                        <tr class="Stato4"> 
+                    {% elif att.Stato.Numero == 5 %}
+                        <tr class="Stato5"> 
+                    {% elif att.Stato.Numero == 6 %}
+                        <tr class="Stato6"> 
+                    {% elif att.Stato.Numero == 7 %}
+                        <tr class="Stato7"> 
+                    {% elif att.Stato.Numero == 8 %}
+                        <tr class="Stato8"> 
+                    {% elif att.Stato.Numero == 9 %}
+                        <tr class="Stato9"> 
+                    {% elif att.Stato.Numero == 10 %}
+                        <tr class="Stato10"> 
+                    {% elif att.Stato.Numero == 0 %}
+                        <tr class="Stato11"> 
+                    {% endif %}
+                    <td>{{att.Progressivo}}<br> <p style="font-size: 11px;">Piano Investimenti Associato: {{att.ID_PianoInvestimenti}}</p></td>
+                    <td>{{att.Apparecchiatura}}</td>
+                    <td>{{att.Qta}}</td>
+                    <td>{{att.Sede_Reparto | linebreaksbr }}</td>
+                    <td style="font-weight: bold;">{{att.Stato}} {% if att.Stato.Numero == 10 %} <br> Motivo= {{att.MotivoAnnullamento}} {% endif %}</td>
+                    <td style="font-size: 11px;">
+                        {% if att.Stato.Numero == 10 %}
+                            <table class="table" style="background-color: transparent; color:white;">
+                        {% else %}
+                            <table class = "table" style="background-color: transparent;">
+                        {% endif %}
+                        {% if att.Stato.Numero > 0 %}
+                        <tr>
+                            <td>Compilazione - inizio</td>
+                            <td colspan = 2> {{att.Data}} </td>
+                        </tr>
+                        {% endif %}
+                        
+                        {% if att.Stato.Numero > 1 %}
+                        <tr>
+                            <td>Compilazione - fine</td>
+                            <td colspan = 2> {{att.Data1}} </td>
+                        </tr>
+                        {% endif %}
+                     
+                        {% if att.Stato.Numero > 2 %}
+                        <tr>
+                            <td>Valutazione - fine</td>
+                            <td colspan = 2> {{att.Data2}} </td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 3 %}
+                        <tr>
+                            <td>Provveditorato</td>
+                            <td colspan = 2> {{att.Data3}} </td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 4 %}
+                        <tr>
+                            <td>Avvio Gara</td>
+                            <td>{{att.Data4}} </td>
+                            <td><a href="/aggiungidocumenti/{{att.id}}/5">&#128206;</a></td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 5 %}
+                        <tr>
+                            <td>Valutazione Offerte</td>
+                            <td> {{att.Data5}} </td>
+                            <td><a href="/aggiungidocumenti/{{att.id}}/6">&#128206;</a></td>
+                        </tr>
+                        {% endif %}
+                        
+                        {% if att.Stato.Numero > 6 %}
+                        <tr>
+                            <td>Aggiudicazione</td>
+                            <td>{{att.Data6}} </td>
+                            <td><a href="/aggiungidocumenti/{{att.id}}/7">&#128206;</a></td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 7  %}
+                        <tr>
+                            <td>Acquisizione</td>
+                            <td> {{att.Data7}} </td>
+                            <td><a href="/aggiungidocumenti/{{att.id}}/8">&#128206;</a></td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 8  %}
+                        <tr>
+                            <td>Collaudo</td>
+                            <td>{{att.Data8}}</td>
+                            <td><a href="/aggiungidocumenti/{{att.id}}/9">&#128206;</a></td>
+                        </tr>
+                        {% endif %}
+                        {% if att.Stato.Numero > 9  %}
+                        <tr>
+                            <td>Sospensione</td>
+                            <td colspan = 2>{{att.Data9}}</td> 
+                        </tr>
+                        {% endif %}
+                        </table>
+                    </td>
+                    <td colspan="2"><a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2 %}">&#128196;</a><br><br>
+                    {% if att.Stato.Numero == 1 %}
+                        {% if sp == 0 %}
+                            <a class="btn btn-sm btn-info" href="{% url 'completa_richiesta' att.id %}">Completa Richiesta</a> {% if att.FabbCopiato %} <br> <br> <a class="btn btn-sm btn-danger" href="{% url 'rimuovirichiesta' att.id %}">Elimina Richiesta</a>{% endif %}</td>
+                        {% else %}
+                            <a class="btn btn-sm btn-info" href="{% url 'aggiorna' att.id opt %}">Completa Richiesta</a> <br><br>
+                            <a class="btn btn-sm btn-info" href="{% url 'richiesta_invalutazione' att.id %}">Manda in Valutazione</a>
+                        {% endif %}
+                    {% elif att.Stato.Numero == 2 %}
+                        {% if user.Gruppo.GaValTec %} <a class="btn btn-sm btn-info" href="{% url 'valutazione' att.id%} ">Esegui Valutazione</a> {% elif user.Gruppo.GaValCli %} <a class="btn btn-sm btn-info" href="{% url 'valutazione' att.id%} ">Esegui Valutazione</a> {% endif %} 
+                    {% elif att.Stato.Numero == 3 %} 
+                        <a class="btn btn-sm btn-info" href="{% url 'invioProvv' att.id%} ">Sped. Provv.</a>
+                    {% elif att.Stato.Numero == 0 %} 
+                        <a class="btn btn-sm btn-info" href="{% url 'update4' att.id%} ">Controlla ed Aggiorna</a><br><br>
+                        <a class="btn btn-sm btn-info" href="{% url 'richiesta_invalutazione' att.id%}">Conferma la richiesta</a>
+                    {% elif att.Stato.Numero == 4 %} 
+                        <a class="btn btn-sm btn-info" href="{% url 'garainiz' att.id %}">Inizio Gara</a>
+                    {% elif att.Stato.Numero == 5 %} 
+                        
+                        <a class="btn btn-sm btn-info" href="{% url 'sospensione' att.id %}">Sosp./Annull.</a><br><br>
+                        <a class="btn btn-sm btn-info" href="{% url 'comissione' att.id %}">Valutazione Offerte</a>
+                    {% elif att.Stato.Numero == 6 %} 
+                        
+                        <a class="btn btn-sm btn-info" href="{% url 'sospensione' att.id %}">Sosp./Annull.</a><br><br>
+                        <a class="btn btn-sm btn-info" href="{% url 'delibera' att.id %}">Arrivo Delibera</a>
+                    {% elif att.Stato.Numero == 7 %} 
+                        
+                        <a class="btn btn-sm btn-info" href="{% url 'sospensione' att.id %}">Sosp./Annull.</a> <br><br>
+
+                        <a class="btn btn-sm btn-info" href="{% url 'acquisto' att.id %}">Acquisto</a>
+                    {% elif att.Stato.Numero == 8 %} 
+                        <a class="btn btn-sm btn-info" href="{% url 'collaudo' att.id %}">Collaudo</a>
+                    {% elif att.Stato.Numero == 9 %}
+                        
+
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            </div>
+    {% endif %}
+</p>
+{% endblock %}

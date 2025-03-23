@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+
+<br>
+<h3>Documenti allegati</h3>
+<h4>Documenti di Gara</h4>
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in docgara %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id st5 %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-sm btn-success" href="{% url 'aggiungidocumenti' att.id st5 %}">Aggiungi Documenti di Gara</a>
+
+<hr>
+<h4>Documenti di Commissione</h4>
+{% if doccomm %}
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in doccomm %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id st6 %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+<a class="btn btn-sm btn-success" href="{% url 'aggiungidocumenti' att.id st6 %}">Aggiungi Documenti di Commissione</a>
+<hr>
+<h4>Documenti di Aggiudicazione</h4>
+{% if docagg %}
+
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in docagg %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id st7 %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+<a class="btn btn-sm btn-success" href="{% url 'aggiungidocumenti' att.id st7 %}">Aggiungi Documenti di Aggiudicazione</a>
+<hr>
+<h4>Documenti di Trasporto</h4>
+
+{% if doctrasp %}
+
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in doctrasp %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id st8 %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+<a class="btn btn-sm btn-success" href="{% url 'aggiungidocumenti' att.id st8 %}">Aggiungi Documenti di Trasporto</a>
+
+<hr>
+<h4>Documenti di Collaudo</h4>
+{% if doccoll %}
+
+<table class="table table-bordered border-dark">
+    <thead>
+        <tr>
+            <th style width="150px">N° Pagine </th>
+            <th>Nome </th>
+            <th>Breve Descrizione</th>
+            <th>Rimuovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ob in doccoll %}
+        <tr>
+
+        <td>{{ob.N_pagine}} </td>
+        <td>{% if ob.File %} <a download="{{ob.Nome}}" href="{{ob.File.url}}" >{{ob.Nome}}</a> {% else %} {{ob.Nome}} {% endif %} </td>
+        <td>{{ob.Descrizione}}</td>
+        <td><a class="btn btn-sm btn-info" href="{% url 'eliminazioneDoc' ob.id st9 %}">Rimuovi</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endif %}
+<a class="btn btn-sm btn-success" href="{% url 'aggiungidocumenti' att.id st9 %}">Aggiungi Documenti di Collaudo</a>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %} 
+<html>
+<head>
+    <title>Seleziona Tipo di Richiesta</title>
+</head>
+
+<body>
+    <h1>Seleziona il tipo di richiesta</h1>
+    <form>
+        <button type="submit" formaction="{% url 'nuova' %}">Nuova Richiesta Programmata</button>
+        <br>
+        <br>
+        <button type="submit" formaction="{% url 'aggiungi_fabbisogno_urgente' %}"> Nuova Richiesta Urgente</button>
+    </form>
+</body>
+</html>
+
+{%endblock%}

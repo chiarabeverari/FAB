@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+{% if var == '3' %}
+<ul class="nav nav-tabs">
+  <li class="nav-item" style="background-color:rgb(196, 196, 252); ">
+    <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+  </li>
+  <li class="nav-item" style="background-color:powderblue;">
+    <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+  </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% elif var == '1' %}
+    <a href="{% url 'raccoltafabbisogni' %}" class="btn btn-sm btn-primary">Termina</a> <br> <br>
+  {% elif var == '2' %}
+  <a href="{% url 'raccoltafabbisogni' %}" class="btn btn-sm btn-primary">Raccolta Fabbisogni</a> <br> <br>
+  <a href = "{% url 'aggiorna' att.id opt %}" class="btn btn-sm btn-info">&#x2190;</a>
+{% endif %}
+
+<center>
+<h2> <b>5 CONSUMABILI PARTICOLARMENTE ONEROSI </b></h2>
+<h3>{{att.Apparecchiatura}}</h3>
+</center>
+{% if k == 2 %}
+<table class="table table-secondary table-striped">
+  <form method = POST>
+    {% csrf_token %}
+  <tbody>
+      <tr>
+          <th>Tipo di consumabile</th>
+          <th>Costo Unitario (Euro)</th>
+          <th>Consumo Medio (Unità)</th>
+          <th>Periodo di utilizzo (Anni)</th>
+          <th colspan="2">Totale (Euro)</th>
+         
+      </tr>
+      {% for con in cons %}
+      {% if con == c %}
+      <tr>
+        <td>{{form.ID_rich.as_hidden}}{{form.Tipo}}</td>
+        <td>{{form.CostoUnitario}}</td>
+        <td>{{form.ConsumoMedio}}</td>
+        <td>{{form.Periodo}}</td>
+        <td>{{form.Totale}}</td>
+        <td><input type="submit"></td>  
+      </tr>
+      {% else %}
+      <tr>
+        <td>{{con.Tipo}}</td>
+        <td>{{con.CostoUnitario}}</td>
+        <td>{{con.ConsumoMedio}}</td>
+        <td>{{con.Periodo}}</td>
+        <td colspan = 2>{{con.Totale}}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+  </tbody>
+  
+</form>
+</table>
+
+{% else %}
+<div style="position:relative; left:10px;"> 
+<table>
+<form action ="" method="POST">
+  <b>se l'attrezzatura richiesta necessita di consumabili particolarmente onerosi compilare la seguente sezione</b> <br>
+  ("particolarmente onerosi": quando il costo medio annuo del consumabile raggiunge o supera il 12,5% del valore di acquisto presunto dell'attrezzatura)
+  <br>
+    {% csrf_token %}
+    {{ form.ID_rich.as_hidden }}
+    TIPO: {{ form.Tipo }} <br>
+    COSTO UNITARIO(€): {{ form.CostoUnitario }} <br>
+    CONSUMO MEDIO riferito al periodo (unità): {{ form.ConsumoMedio }} <br>
+    PERIODO di utilizzo (anni): {{form.Periodo}}<br>
+
+
+    <input type="submit" name="Aggiungi">
+</form>
+</table>
+</div>
+<br>
+
+<div class="center2" style="position:relative; top:100px">
+    <table class="table table-secondary table-striped">
+        <tbody>
+            <tr>
+                <th>Tipo di consumabile</th>
+                <th>Costo Unitario (Euro)</th>
+                <th>Consumo Medio (Unità)</th>
+                <th>Periodo di utilizzo (anni)</th>
+                <th>Totale (Euro)</th>
+                <th>Modifica</th>
+                <th>Elimina</th>
+            </tr>
+            {% for con in cons %}
+            <tr>
+            <td>{{con.Tipo}}</td>
+            <td>{{con.CostoUnitario}}</td>
+            <td>{{con.ConsumoMedio}}</td>
+            <td>{{con.Periodo}}</td>
+            <td>{{con.Totale}}</td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificaconsumabili' con.id var%}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'deleteconsu' con.id var%}">Rimuovi</a></td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+{% endif %}
+{% endblock %}

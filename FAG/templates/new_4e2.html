@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+{% if var == '3' %}
+
+<ul class="nav nav-tabs">
+  <li class="nav-item" style="background-color:rgb(196, 196, 252); ">
+    <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+  </li>
+  <li class="nav-item" style="background-color:powderblue;">
+    <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+  </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_5' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% endif %}
+<div style="position:relative; left:20px;">
+  <a class="btn-sm btn-info" href="{% url 'new_2_4' att.id var %}">&#x2190;</a>
+  <a class="btn-sm btn-info" href="{% url 'new_4e3' att.id var %}">&#x2192;</a>
+ 
+</div>
+<center><h2><b> 4.2 Unicità delle caratteristiche </b> </h2>
+    <br>
+    <h3>di {{ att.Apparecchiatura }}</h3>
+</center>
+
+{% if k == 2 %} 
+<table class="table table-success table-striped">
+  <form method="POST">
+    {% csrf_token %}
+
+  <tbody>
+  <thead>
+    <tr>
+        <th>Rif.</th>
+        <th colspan = 2>Nota</th>
+    </tr>
+  </thead>
+    {% for un in uns %}
+    {% if u == un %}
+    <tr>
+    <td>{{un.rifext}}{{form.rifext.as_hidden}}{{form.ID_rich.as_hidden}}</td>
+    <td>{{form.Nota}}</td>
+    <td><input type="submit"></td>  
+    </tr>
+    {% else %}
+    <tr>
+      <td>{{un.rifext}}</td>
+      <td colspan="2">{{un.Nota}}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</tbody>
+</form>
+</table>
+{% else %}
+<div class="center" style="position:relative;">
+  <table class="table table-success table-striped">
+      <form method ="POST">
+        {% csrf_token %}
+        {{unformset.management_form}}
+        <tbody>
+        <thead>
+          <tr>
+              <th>Rif.</th>
+              <th>Specifica</th>
+              <th>m/M</th>
+              <th>Unicità</th>
+          </tr>
+        </thead>
+          {% for spec,form in insieme %}
+          <tr>
+          <td>{{spec.rif}}</td>
+          <td>{{spec.Specifica}}</td>  
+          <td>{% if spec.Min %} m {% else %} M {% endif %}</a></td>
+          <td>{{form.Un}} {{form.id}}</td>
+          </tr>
+          {% endfor %}
+          <tr><td colspan=4><input type="submit" name="Uni"></td></tr>
+      </tbody>
+      
+    </form>
+  </table>
+</div>
+
+<hr>
+<div>
+  <form method="POST">
+    {% csrf_token %} 4.1 {{unform.Simili}} Alcune caratteristiche riportate nell'elenco individuano una apparecchiatura o sistema; in particolare si dichiara che non esistono sul mercato attrezzature simili idonee ad assolvere la funzione indicata. {{unform.NoteGen}}
+    <input type="submit" name="Simili">
+  </form>
+</div>
+<hr>
+<div>
+<table>
+<form method="POST">
+    {% csrf_token %}
+    <tr><td><h4>Inserisci le unicità delle caratteristiche.</h4>
+      {{form.ID_rich.as_hidden}}
+      RIFERIMENTO SPECIFICA: {{ form.rifext }}
+      <br>
+      NOTA: {{ form.Nota }}</td></tr>
+
+    <tr><td><input type="submit" name="Aggiungi"></td></tr>
+</form>
+</table>
+</div>
+<br>
+<table class="table table-success table-striped">
+    <tbody>
+    <thead>
+      <tr>
+          <th>Rif.</th>
+          <th>Nota</th>
+          <th>Modifica</th>
+          <th>Rimuovi</th>
+      </tr>
+    </thead>
+      {% for un in uns %}
+      <tr>
+      <td>{{un.rifext}}</td>
+      <td>{{un.Nota}}</td>
+      <td><a class="btn btn-sm btn-info" href="{% url 'modificaunicita' un.id var %}">Modifica</a></td>  
+      <td><a class="btn btn-sm btn-info" href="{% url 'deleteunicita' un.id var %}">Rimuovi</a></td>  
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+{% endif %}
+{% endblock %}

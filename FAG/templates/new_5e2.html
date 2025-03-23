@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% if user.is_authenticated %}
+{% if var == '3' %}
+<ul class="nav nav-tabs" >
+  <li class="nav-item" style="background-color:rgb(196, 196, 252); ">
+    <a class="nav-link" href="{% url 'home' altro %}">Elenco Richieste</a>
+  </li>
+  <li class="nav-item" style="background-color:powderblue;">
+    <a class="nav-link" href="{% url 'aggiorna' att.id var%}">0 - 1 - 2 - 7</a>
+  </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'attachements' att.id var%}">Allegati</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_2_4' att.id var %}">4</a>
+      </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e2' att.id var %}">4.2</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_4e3' att.id var %}">4.3</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+      <a class="nav-link" href="{% url 'new_5' att.id var %}">5</a>
+    </li>
+    <li class="nav-item" style="background-color:powderblue;">
+        <a class="nav-link" href="{% url 'new_5e2' att.id var %}">5.2</a>
+    </li>
+  </ul>
+{% endif %}
+<div style="position:relative; left:10px;">
+  <a class="btn-sm btn-info" href="{% url 'new_5' att.id var %}">&#x2190;</a>
+  <a class="btn-sm btn-info" href="{% url 'home' altro %}">Termina</a> 
+</div>
+<center>
+<h2><b>5.2 ELENCO DELLE POSSIBILI DITTE FORNITRICI</b></h2>
+<h3>{{att.Apparecchiatura}}</h3>
+</center>
+{% if k == 2 %} 
+<table class="table table-secondary table-striped">
+  <form method="POST">
+    {% csrf_token %}
+  <tbody>
+      <tr>
+          <th>Rif.</th>
+          <th>Nome Ditta</th>
+          <th>Telefono</th>
+          <th colspan="2">Email</th>
+ 
+      </tr>
+      {% for ditta in ds %}
+      {% if d == ditta %}
+      <tr>
+      <td>{{d.Rif}}{{form.Rif.as_hidden}}</td>
+      <td>{{form.NomeDitta}}</td> 
+      <td>{{form.ContattoEM}}</td> 
+      <td>{{form.ContattoTel}}</td> 
+      <td><input type=submit></td>
+      </tr>
+      {% else %} 
+      <tr>
+        <td>{{ditta.Rif}}</td>
+        <td>{{ditta.NomeDitta}}</td> 
+        <td>{{ditta.ContattoEM}}</td> 
+        <td colspan="2">{{ditta.ContattoTel}}</td> 
+      </tr>
+      {% endif %}
+      {% endfor %}
+      
+  </tbody>
+</form>
+</table>
+{% else %} 
+
+<div> 
+<form action ="" method="POST">
+    {% csrf_token %}
+    {{form.ID_rich.as_hidden}}
+    DITTA: {{form.NomeDitta}}<br>
+    {{form.Rif.as_hidden}} <br>
+    CONTATTO E-MAIL: {{form.ContattoEM}} <br>
+    CONTATTO TEL: {{form.ContattoTel}} <br>
+
+    <input type="submit" name="Aggiungi">
+</form>
+</div>
+<br>
+
+
+<div class="center" style="position:relative; top: 100px;">
+    <table class="table table-secondary table-striped">
+        <tbody>
+            <tr>
+                <th>Rif.</th>
+                <th>Nome Ditta</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>Modifica</th>
+                <th>Rimuovi</th>
+            </tr>
+            {% for ditta in ditte %}
+            <tr>
+            <td>{{ditta.Rif}}</td>
+            <td>{{ditta.NomeDitta}}</td> 
+            <td>{{ditta.ContattoTel}}</td> 
+            <td>{{ditta.ContattoEM}}</td> 
+            <td><a class="btn btn-sm btn-info" href="{% url 'modificaditteinserite' ditta.id var%}">Modifica</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'deleteditta' ditta.id var%}">Elimina</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %} 
+{% if user.is_authenticated %}
+
+<h1> Attività </h1>
+
+<!-- Se l'utente è admin, può scegliere un ruolo -->
+{% if admin_roles %}
+<form method="GET" class="mb-3">
+    <label for="ruolo"><strong>Scegli un ruolo:</strong></label>
+    <select name="ruolo" id="ruolo" class="form-control w-auto d-inline-block" onchange="this.form.submit()">
+        <option value="">-- Seleziona un ruolo --</option>
+        {% for ruolo in admin_roles %}
+            <option value="{{ ruolo }}" {% if request.GET.ruolo == ruolo %}selected{% endif %}>
+                {{ ruolo }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+{% endif %}
+
+<hr>
+
+<!-- Elenco Richieste Programmate -->
+<strong>Elenco Richieste Programmate:</strong>
+<div style="max-height: 700px; overflow-y: auto;">
+    {% if insieme %}
+    <table class="table table-striped" style="background-color:rgb(136, 163, 254);">
+        <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure; top: 0; z-index: 1;">
+            <tr>
+                <form method="get">
+                    <th>Progr.<br> {{tabFilter.form.Progressivo}}</th>
+                    <th>Sede - Reparto - SubReparto<br> {{tabFilter.form.Sede}}</th>
+                    <th>Apparecchiatura<br> {{tabFilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà<br> {{tabFilter.form.Qta}}</th>
+                    <th>Priorità<br> {{tabFilter.form.Priorita}}</th>
+                    <th>Costo Presunto (IVA escl.)<br> {{tabFilter.form.Costo_Presunto_NOIVA}}</th>
+                    <th>Costo Presunto (IVA incl.)<br> {{tabFilter.form.Costo_Presunto_IVA}}</th>
+                    <th>Compilatore<br> {{tabFilter.form.Compilatore}}</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+            </tr>
+        </thead>
+        <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att, avv in insieme %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td style="font-weight: bold;">{{ att.Progressivo }}</td>
+                        <td>{{ att.Sede_Reparto }}</td>
+                        <td>{{ att.Apparecchiatura }}</td>
+                        <td>{{ att.Qta }}</td>
+                        <td>{{ att.Priorita }}</td>
+                        <td>{{ att.Costo_Presunto_NOIVA }}</td>
+                        <td>{{ att.Costo_Presunto_IVA }}</td>
+                        <td>{{ att.Compilatore }}</td>
+                        <td style="font-weight: bold;">
+                            {% if att.ID_PianoInvestimenti is not None %} 
+                                {{ att.ID_PianoInvestimenti }} 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="{% url 'visualizza' att.id var2 %}">Visualizza</a>
+                            {% if not avv %}
+                                <br><br> 
+                                <a class="btn btn-sm btn-info" href="{% url 'valutazioneprogram' att.id opt %}">Valuta</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type="submit" class="btn btn-primary" value="Salva"></td></tr>
+            </form>
+        </tbody>
+    </table>
+    {% else %}
+        <p class="alert alert-warning">Nessuna richiesta programmata disponibile.</p>
+    {% endif %}
+</div>
+
+<hr>
+
+<!-- Elenco Richieste Urgenti -->
+<strong>Elenco Richieste Urgenti:</strong>
+<div style="max-height: 700px; overflow-y: auto;">
+    {% if urgenti %}
+    <table class="table table-striped" style="background-color:rgb(136, 163, 254);">
+        <thead style="position: sticky; background-color:rgb(0, 60, 255); color:azure; top: 0; z-index: 1;">
+            <tr>
+                <form method="get">
+                    <th>Progr.<br> {{urgFilter.form.Progressivo}}</th>
+                    <th>Sede - Reparto - SubReparto<br> {{urgFilter.form.Sede}}</th>
+                    <th>Apparecchiatura<br> {{urgFilter.form.Apparecchiatura}}</th>
+                    <th>Q.tà<br> {{urgFilter.form.Qta}}</th>
+                    <th>Priorità<br> {{urgFilter.form.Priorita}}</th>
+                    <th>Costo Presunto (IVA escl.)<br> {{urgFilter.form.Costo_Presunto_NOIVA}}</th>
+                    <th>Costo Presunto (IVA incl.)<br> {{urgFilter.form.Costo_Presunto_IVA}}</th>
+                    <th>Compilatore<br> {{urgFilter.form.Compilatore}}</th>
+                    <th>ID Inv.</th>
+                    <th> <button class="btn btn-sm btn-success" type="submit">&#8981;</button></th>
+                </form>
+            </tr>
+        </thead>
+        <tbody>
+            <form method="POST">
+                {% csrf_token %} 
+                {{formset.management_form}}
+                {% for att in urgenti %}
+                    {% if not att.Eliminato %}
+                    <tr>
+                        <td style="font-weight: bold;">{{ att.Progressivo }}</td>
+                        <td>{{ att.Sede_Reparto }}</td>
+                        <td>{{ att.Apparecchiatura }}</td>
+                        <td>{{ att.Qta }}</td>
+                        <td>{{ att.Priorita }}</td>
+                        <td>{{ att.Costo_Presunto_NOIVA }}</td>
+                        <td>{{ att.Costo_Presunto_IVA }}</td>
+                        <td>{{ att.Compilatore }}</td>
+                        <td style="font-weight: bold;">
+                            {% if att.ID_PianoInvestimenti is not None %} 
+                                {{ att.ID_PianoInvestimenti }} 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="{% url 'visualizzaurg' att.id %}">Visualizza</a>
+                            <br><br>
+                            <a class="btn btn-sm btn-info" href="{% url 'valutazioneurg' att.id %}">Valuta</a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr><td><input type="submit" class="btn btn-primary" value="Salva"></td></tr>
+            </form>
+        </tbody>
+    </table>
+    {% else %}
+        <p class="alert alert-warning">Nessuna richiesta urgente disponibile.</p>
+    {% endif %}
+</div>
+
+{% endif %}
+{% endblock %}
