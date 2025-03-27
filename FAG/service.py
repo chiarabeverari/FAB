@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
+'''
 #avanzamento stato richiesta
 def avanzamento_stato(self, utente, nuovo_stato): #da modificare 
         """
@@ -17,7 +18,7 @@ def avanzamento_stato(self, utente, nuovo_stato): #da modificare
         "DIR. MEDICA": {
             "SpVeTu": [StatoRichiesta.SPEDITA, StatoRichiesta.NEGATA_DA_DAA],
         },
-        "UIC": {
+        "ING. CLINICA": {
             "PIVeTu": [StatoRichiesta.APPROVATA, StatoRichiesta.NON_APPROVATA],
         }
         }
@@ -40,41 +41,7 @@ def avanzamento_stato(self, utente, nuovo_stato): #da modificare
         self.StatoRic = nuovo_stato
         self.save()
 '''
-def get_opzioni_stato(utente):
-    permessi_gruppo = {
-        "PRIMARIO": {
-            "FaVeTu": [StatoRichiesta.DEFINITIVA, StatoRichiesta.RIFIUTATA_DA_DIR, StatoRichiesta.MODIFICA],
-        },
-        "DIR. MEDICA": {
-            "SpVeTu": [StatoRichiesta.SPEDITA, StatoRichiesta.NEGATA_DA_DAA],
-        },
-        "UIC": {
-            "PIVeTu": [StatoRichiesta.APPROVATA, StatoRichiesta.NON_APPROVATA],
-        }
-    }
 
-    if utente.is_superuser:
-        # L'admin può scegliere di agire come un ruolo specifico
-        return {
-            "PRIMARIO": permessi_gruppo["PRIMARIO"]["FaVeTu"],
-            "DIR. MEDICA": permessi_gruppo["DIR. MEDICA"]["SpVeTu"],
-            "UIC": permessi_gruppo["UIC"]["PIVeTu"]
-        }
-
-
-    gruppo_utente = utente.Gruppo.Descrizione  # Ottiene il gruppo dell'utente
-
-    if gruppo_utente not in permessi_gruppo:
-        return []  # Se il gruppo non ha permessi, non può selezionare nulla
-
-    # Ottiene gli stati disponibili per il gruppo dell'utente
-    stati_disponibili = []
-    for permesso, stati_validi in permessi_gruppo[gruppo_utente].items():
-        if getattr(utente.Gruppo, permesso, False):  # Controlla se il permesso è attivo
-            stati_disponibili.extend(stati_validi)
-    
-    return stati_disponibili
-'''
 def get_opzioni_stato(utente, ruolo_scelto=None):
     permessi_gruppo = {
         "PRIMARIO": {
@@ -83,7 +50,7 @@ def get_opzioni_stato(utente, ruolo_scelto=None):
         "DIR. MEDICA": {
             "SpVeTu": [StatoRichiesta.SPEDITA, StatoRichiesta.NEGATA_DA_DAA],
         },
-        "UIC": {
+        "ING. CLINICA": {
             "PIVeTu": [StatoRichiesta.APPROVATA, StatoRichiesta.NON_APPROVATA],
         }
     }

@@ -26,7 +26,9 @@ SECRET_KEY = '=9+&pyx&g2kc&4&a0knz8q@+%4%__kz13+v-#52s#s=ic-%l$_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["princi99.pythonanywhere.com"]
+ALLOWED_HOSTS = ['localhost','127.0.0.1', '.pythonanywhere.com']
+#ALLOWED_HOSTS = [] #default
+
 AUTH_USER_MODEL = 'FAG.MedicalUser'
 
 # Application definition
